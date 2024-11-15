@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	function fechaNuevaMayor(horaNueva, horaActual) {
 		if (
 			parseInt(horaNueva.splice(2, 1)) -
-				parseInt(horaActual.splice(2, 1)) >
+			parseInt(horaActual.splice(2, 1)) >
 			0
 		) {
 			return true;
@@ -64,56 +64,49 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	class Aeropuerto {
-		constructor(nombre, numeroAulas, numeroAlumnos) {
+		constructor(nombre, ciudad, numeroVuelosDiarios) {
 			this.nombre = nombre;
-			this.numeroAulas = numeroAulas;
-			this.arrayAlumnos = [];
-			for (let dni = 0; dni < numeroAlumnos; dni++) {
-				this.arrayAlumnos[dni] = new Alumno(dni, "Alumno" + dni, 5, 5);
+			this.ciudad = ciudad;
+			this.arrayVuelos = [];
+			for (let codigo = 0; codigo < numeroVuelosDiarios; codigo++) {
+				this.arrayVuelos[dni] = new Vuelo(codigo, compania, hora_llegada, hora_salida);
 			}
 		}
 
-		consultarAlumno(dni) {
-			return this.arrayAlumnos[dni];
+		consultarVuelo(codigo) {
+			return this.arrayVuelos[codigo];
 		}
 
-		modificarAlumno(dni, nombre, notaExamen, notaPracticas) {
-			this.arrayAlumnos[dni].setNombre(nombre);
-			this.arrayAlumnos[dni].setNotaExamen(notaExamen);
-			this.arrayAlumnos[dni].setNotaPracticas(notaPracticas);
+		modificarVuelo(codigo, compania, hora_llegada, hora_salida) {
+			this.arrayVuelos[codigo].setCodigo(codigo);
+			this.arrayVuelos[codigo].setCompannia(compania);
+			this.arrayVuelos[codigo].setHoraLlegada(hora_llegada);
+			this.arrayVuelos[codigo].setHoraSalida(hora_salida);
 		}
 	}
 
-	const colegio = new Colegio("Mi Colegio", 5, 10);
 
 	document.getElementById("botonGuardar").addEventListener("click", () => {
-		const id = parseInt(document.getElementById("idEntrada").value);
-		const nombre = document.getElementById("nombreEntrada").value;
-		const notaPracticas = parseFloat(
-			document.getElementById("notaPracticasEntrada").value
-		);
-		const notaExamen = parseFloat(
-			document.getElementById("notaExamenEntrada").value
-		);
+		const codigo = parseInt(document.getElementById("codigo").value);
+		const compania = document.getElementById("compania").value;
+		const hora_llegada = document.getElementById("horaLlegada").value;
+		const hora_salida = document.getElementById("horaSalida").value;
 
-		colegio.modificarAlumno(id, nombre, notaExamen, notaPracticas);
-		alert("Datos guardados para el alumno con ID: " + id);
+		Aeropuerto.modificarVuelo(codigo, compania, hora_llegada, hora_salida);
+		alert("Datos guardados para el vuelo con codigo: " + codigo);
 	});
 
 	document.getElementById("botonMostrar").addEventListener("click", () => {
-		const id = parseInt(document.getElementById("idSalida").value);
-		const alumno = colegio.consultarAlumno(id);
+		const codigo = parseInt(document.getElementById("codigoMostrar").value);
+		const vuelo = Aeropuerto.consultarVuelo(codigo);
 
-		if (alumno) {
-			document.getElementById("nombreSalida").value = alumno.getNombre();
-			document.getElementById("notaPracticasSalida").value =
-				alumno.getNotaPracticas();
-			document.getElementById("notaExamenSalida").value =
-				alumno.getNotaExamen();
-			document.getElementById("notaMediaSalida").value =
-				alumno.calcularNotaMedia();
+		if (vuelo) {
+			document.getElementById("codigo").value = vuelo.getCodigo();
+			document.getElementById("compania").value = vuelo.getCompania();
+			document.getElementById("horaLlegada").value = vuelo.getHoraLlegada();
+			document.getElementById("horaSalida").value = vuelo.getHoraSalida();
 		} else {
-			alert("No se encontró un alumno con ID: " + id);
+			alert("No se encontró un vuelo con el código: " + codigo);
 		}
 	});
 });
