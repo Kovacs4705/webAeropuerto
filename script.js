@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		constructor(codigo, compannia, hora_llegada, hora_salida) {
 			this.codigo = codigo;
 			this.compannia = compannia;
-			this.hora_llegada = hora_llegada;
+			// o se coloca la hora de llegada a partir de la salida o viceversa
+			// ambas no porque una depende de la otra, osea, una debe estar inicializada
+			// para poder comprobar la otra, esto es para que no se puedan crear nuevos vuelos mal
+			this.hora_llegada = this.setHoraLlegada(hora_llegada);
 			this.hora_salida = hora_salida;
 		}
 
@@ -55,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	function fechaNuevaMayor(horaNueva, horaActual) {
 		if (
 			parseInt(horaNueva.splice(2, 1)) -
-			parseInt(horaActual.splice(2, 1)) >
+				parseInt(horaActual.splice(2, 1)) >
 			0
 		) {
 			return true;
@@ -68,23 +71,39 @@ document.addEventListener("DOMContentLoaded", () => {
 			this.nombre = nombre;
 			this.ciudad = ciudad;
 			this.arrayVuelos = [];
-			for (let codigo = 0; codigo < numeroVuelosDiarios; codigo++) {
-				this.arrayVuelos[dni] = new Vuelo(codigo, compania, hora_llegada, hora_salida);
-			}
+		}
+
+		guardarVuelo(vuelo) {
+			this.arrayVuelos.push(vuelo);
 		}
 
 		consultarVuelo(codigo) {
-			return this.arrayVuelos[codigo];
+			this.arrayVuelos.forEach((vuelo) => {
+				if (vuelo.getCodigo() === codigo) {
+					return vuelo;
+				}
+			});
+			return null;
 		}
 
 		modificarVuelo(codigo, compania, hora_llegada, hora_salida) {
-			this.arrayVuelos[codigo].setCodigo(codigo);
-			this.arrayVuelos[codigo].setCompannia(compania);
-			this.arrayVuelos[codigo].setHoraLlegada(hora_llegada);
-			this.arrayVuelos[codigo].setHoraSalida(hora_salida);
+			// si el vuelo existe por ese codigo no hay porque modificalo
+			// this.arrayVuelos[codigo].setCodigo(codigo);
+
+			// se llenan solo los campos que se han modificado
+			if (compania != "") {
+				this.arrayVuelos[codigo].setCompannia(compania);
+			}
+			if (hora_llegada != "") {
+				this.arrayVuelos[codigo].setHoraLlegada(hora_llegada);
+			}
+			if (hora_salida != "") {
+				this.arrayVuelos[codigo].setHoraSalida(hora_salida);
+			}
 		}
 	}
 
+	const aeropuerto = new Aeropuerto("Nombre1", "Ciudad1", 10);
 
 	document.getElementById("botonGuardar").addEventListener("click", () => {
 		const codigo = parseInt(document.getElementById("codigo").value);
@@ -92,7 +111,26 @@ document.addEventListener("DOMContentLoaded", () => {
 		const hora_llegada = document.getElementById("horaLlegada").value;
 		const hora_salida = document.getElementById("horaSalida").value;
 
-		Aeropuerto.modificarVuelo(codigo, compania, hora_llegada, hora_salida);
+		// si existe el vuelo con ese codigo lo modifica
+		if (aeropuerto.consultarVuelo(codigo)) {
+			Aeropuerto.modificarVuelo(
+				codigo,
+				compania,
+				hora_llegada,
+				hora_salida
+			);
+		}
+
+		// si no existe lo guarda
+		else {
+			const vuelo = new Vuelo(
+				codigo,
+				compania,
+				hora_llegada,
+				hora_salida
+			);
+			aeropuerto.guardarVuelo(vuelo);
+		}
 		alert("Datos guardados para el vuelo con codigo: " + codigo);
 	});
 
@@ -103,7 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (vuelo) {
 			document.getElementById("codigo").value = vuelo.getCodigo();
 			document.getElementById("compania").value = vuelo.getCompania();
-			document.getElementById("horaLlegada").value = vuelo.getHoraLlegada();
+			document.getElementById("horaLlegada").value =
+				vuelo.getHoraLlegada();
 			document.getElementById("horaSalida").value = vuelo.getHoraSalida();
 		} else {
 			alert("No se encontró un vuelo con el código: " + codigo);
