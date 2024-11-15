@@ -29,10 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// falta comprobar que la hora nueva de llegada no sea inferior a la de salida
 		setHoraLlegada(nuevaHoraLlegada) {
-            if (fechaNuevaMayor(nuevaHoraLlegada,this.hora_salida)) {
-                this.hora_llegada = nuevaHoraLlegada;
-            }
-			else alert("La hora de llegada introducida no es correcta.\nDebe ser posterior a la hora de salida")
+			if (fechaNuevaMayor(nuevaHoraLlegada, this.hora_salida)) {
+				this.hora_llegada = nuevaHoraLlegada;
+			} else
+				alert(
+					"La hora de llegada introducida no es correcta.\nDebe ser posterior a la hora de salida"
+				);
 		}
 
 		getHoraSalida() {
@@ -41,10 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		// falta comprobar que la nueva hora de salida no supere a la hora de llegada
 		setHoraSalida(nuevaHoraSalida) {
-            if (!fechaNuevaMayor(nuevaHoraSalida,this.hora_llegada)) {
-                this.hora_salida = nuevaHoraSalida;
-            }
-			else alert("La hora de salida introducida no es correcta.\nDebe ser anterior a la hora de llegada")
+			if (!fechaNuevaMayor(nuevaHoraSalida, this.hora_llegada)) {
+				this.hora_salida = nuevaHoraSalida;
+			} else
+				alert(
+					"La hora de salida introducida no es correcta.\nDebe ser anterior a la hora de llegada"
+				);
 		}
 	}
 
