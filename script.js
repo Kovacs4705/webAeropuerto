@@ -5,8 +5,13 @@ class Vuelo {
 		// o se coloca la hora de llegada a partir de la salida o viceversa
 		// ambas no porque una depende de la otra, osea, una debe estar inicializada
 		// para poder comprobar la otra, esto es para que no se puedan crear nuevos vuelos mal
-		this.hora_llegada = hora_llegada;
 		this.hora_salida = hora_salida;
+		if (this.compararHoras(hora_salida, hora_llegada)) {
+			this.hora_llegada = hora_llegada;
+		} else {
+			alert("La hora de llegada no puede ser anterior a la de salida.");
+			this.hora_llegada = null; // O un valor por defecto
+		}
 	}
 
 	getCodigo() {
@@ -17,7 +22,7 @@ class Vuelo {
 		this.codigo = nuevoCodigo;
 	}
 
-	getCompannia() {
+	getCompania() {
 		return this.compannia;
 	}
 
@@ -31,7 +36,7 @@ class Vuelo {
 
 	// falta comprobar que la hora nueva de llegada no sea inferior a la de salida
 	setHoraLlegada(nuevaHoraLlegada) {
-		if (compararHoras(nuevaHoraLlegada, this.hora_salida)) {
+		if (this.compararHoras(nuevaHoraLlegada, this.hora_salida)) {
 			this.hora_llegada = nuevaHoraLlegada;
 		} else
 			alert(
@@ -45,16 +50,18 @@ class Vuelo {
 
 	// falta comprobar que la nueva hora de salida no supere a la hora de llegada
 	setHoraSalida(nuevaHoraSalida) {
-		if (!compararHoras(nuevaHoraSalida, this.hora_llegada)) {
+		if (!this.compararHoras(nuevaHoraSalida, this.hora_llegada)) {
 			this.hora_salida = nuevaHoraSalida;
 		} else
 			alert(
 				"La hora de salida introducida no es correcta.\nDebe ser anterior a la hora de llegada"
 			);
 	}
+
 	compararHoras(hora1, hora2) {
-		const [horas1, minutos1] = hora1.split(':').map(Number);
-		const [horas2, minutos2] = hora2.split(':').map(Number);
+		if (!hora1 || !hora2) return false; // Validación por si alguna hora es nula
+		const [horas1, minutos1] = hora1.split(":").map(Number);
+		const [horas2, minutos2] = hora2.split(":").map(Number);
 
 		const minutosTotales1 = horas1 * 60 + minutos1;
 		const minutosTotales2 = horas2 * 60 + minutos2;
@@ -63,10 +70,7 @@ class Vuelo {
 	}
 }
 
-
-
 class Aeropuerto {
-	
 	constructor(nombre, ciudad, numeroVuelosDiarios) {
 		this.nombre = nombre;
 		this.ciudad = ciudad;
@@ -75,21 +79,23 @@ class Aeropuerto {
 
 	guardarVuelo(vuelo) {
 		this.arrayVuelos.push(vuelo);
+		console.log("vuelo guardado");
 	}
 
 	consultarVuelo(codigo) {
-		this.arrayVuelos.forEach((vuelo) => {
-			if (vuelo.getCodigo() === codigo) {
-				return vuelo;
-			}
-		});
-		return null;
+		return (
+			this.arrayVuelos.find((vuelo) => vuelo.getCodigo() === codigo) ||
+			null
+		);
 	}
 
 	modificarVuelo(codigo, compania, hora_llegada, hora_salida) {
-		// si el vuelo existe por ese codigo no hay porque modificalo
-		// this.arrayVuelos[codigo].setCodigo(codigo);
-
+		const vuelo = this.consultarVuelo(codigo);
+		if (!vuelo) {
+			alert(`No se encontró un vuelo con código: ${codigo}`);
+			return;
+		}
+		
 		// se llenan solo los campos que se han modificado
 		if (compania != "") {
 			this.arrayVuelos[codigo].setCompannia(compania);
@@ -106,7 +112,6 @@ class Aeropuerto {
 const aeropuerto = new Aeropuerto("Nombre1", "Ciudad1", 10);
 console.log(aeropuerto);
 
-
 document.getElementById("botonGuardar").addEventListener("click", () => {
 	const codigo = parseInt(document.getElementById("codigo").value);
 	const compania = document.getElementById("compania").value;
@@ -114,27 +119,17 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 	const hora_salida = document.getElementById("horaSalida").value;
 
 	// si existe el vuelo con ese codigo lo modifica
-	if (aeropuerto.consultarVuelo(codigo)) {
-		Aeropuerto.modificarVuelo(
-			codigo,
-			compania,
-			hora_llegada,
-			hora_salida
-		);
+	if (aeropuerto.consultarVuelo(codigo) != null) {
+		Aeropuerto.modificarVuelo(codigo, compania, hora_llegada, hora_salida);
 	}
 
 	// si no existe lo guarda
 	else {
-		const vuelo = new Vuelo(
-			codigo,
-			compania,
-			hora_llegada,
-			hora_salida
-		);
+		const vuelo = new Vuelo(codigo, compania, hora_llegada, hora_salida);
 		aeropuerto.guardarVuelo(vuelo);
 	}
 	alert("Datos guardados para el vuelo con codigo: " + codigo);
-	console.log(arrayVuelos);
+	console.log(aeropuerto.arrayVuelos);
 
 	document.getElementById("codigo").value = "";
 	document.getElementById("compania").value = "";
@@ -169,31 +164,36 @@ function mostrarVuelos(compania, horaSalida, horaLlegada) {
 	listaVuelos.innerHTML = "";
 
 	// Filtrar los vuelos según las condiciones
-	const vuelosFiltrados = aeropuerto.arrayVuelos.filter(vuelo => {
+	const vuelosFiltrados = aeropuerto.arrayVuelos.filter((vuelo) => {
 		// Si no se ha ingresado ningún valor para Compañía, se incluye ese vuelo
-		const coincideCompania = compania ? vuelo.getCompania().toLowerCase() === compania.toLowerCase() : true;
+		const coincideCompania = compania
+			? vuelo.getCompania().toLowerCase() === compania.toLowerCase()
+			: true;
 
 		// Si no se ha ingresado ningún valor para la Hora de salida, se incluye ese vuelo
-		const coincideHoraSalida = horaSalida ? vuelo.getHoraSalida() === horaSalida : true;
+		const coincideHoraSalida = horaSalida
+			? vuelo.getHoraSalida() === horaSalida
+			: true;
 
 		// Si no se ha ingresado ningún valor para la Hora de llegada, se incluye ese vuelo
-		const coincideHoraLlegada = horaLlegada ? vuelo.getHoraLlegada() === horaLlegada : true;
+		const coincideHoraLlegada = horaLlegada
+			? vuelo.getHoraLlegada() === horaLlegada
+			: true;
 
 		return coincideCompania && coincideHoraSalida && coincideHoraLlegada;
 	});
 
 	// Si no hay vuelos que coincidan con los criterios, mostrar un mensaje
 	if (vuelosFiltrados.length === 0) {
-		listaVuelos.innerHTML = "<li>No se encontraron vuelos con los criterios especificados.</li>";
+		listaVuelos.innerHTML =
+			"<li>No se encontraron vuelos con los criterios especificados.</li>";
 		return;
 	}
 
 	// Mostrar los vuelos filtrados en la lista
-	vuelosFiltrados.forEach(vuelo => {
+	vuelosFiltrados.forEach((vuelo) => {
 		const li = document.createElement("li");
 		li.textContent = `Código: ${vuelo.getCodigo()}, Compañía: ${vuelo.getCompania()}, Hora de salida: ${vuelo.getHoraSalida()}, Hora de llegada: ${vuelo.getHoraLlegada()}`;
 		listaVuelos.appendChild(li);
 	});
-
 }
-
