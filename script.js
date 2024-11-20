@@ -1,3 +1,4 @@
+// @Alejandro Solar y David Kovacs
 class Vuelo {
 	constructor(codigo, compannia, hora_llegada, hora_salida) {
 		this.codigo = codigo;
