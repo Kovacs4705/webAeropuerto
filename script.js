@@ -121,15 +121,18 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 	// si existe el vuelo con ese codigo lo modifica
 	if (aeropuerto.consultarVuelo(codigo) != null) {
 		Aeropuerto.modificarVuelo(codigo, compania, hora_llegada, hora_salida);
+		alert("Datos guardados para el vuelo con codigo: " + codigo);
 	}
 
 	// si no existe lo guarda
 	else {
 		const vuelo = new Vuelo(codigo, compania, hora_llegada, hora_salida);
-		aeropuerto.guardarVuelo(vuelo);
+		if (!vuelo.getHoraLlegada === null) {
+			aeropuerto.guardarVuelo(vuelo);
+			alert("Datos guardados para el vuelo con codigo: " + codigo);
+		}
 	}
-	alert("Datos guardados para el vuelo con codigo: " + codigo);
-	console.log(aeropuerto.arrayVuelos);
+
 
 	document.getElementById("codigo").value = "";
 	document.getElementById("compania").value = "";
