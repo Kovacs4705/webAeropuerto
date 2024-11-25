@@ -84,10 +84,7 @@ class Aeropuerto {
 	}
 
 	consultarVuelo(codigo) {
-		return (
-			this.arrayVuelos.find((vuelo) => vuelo.getCodigo() === codigo) ||
-			null
-		);
+		return this.arrayVuelos.find((vuelo) => vuelo.getCodigo() === codigo) || null;
 	}
 
 	modificarVuelo(codigo, compania, hora_llegada, hora_salida) {
@@ -96,7 +93,7 @@ class Aeropuerto {
 			alert(`No se encontró un vuelo con código: ${codigo}`);
 			return;
 		}
-		
+
 		// se llenan solo los campos que se han modificado
 		if (compania != "") {
 			this.arrayVuelos[codigo].setCompannia(compania);
@@ -108,6 +105,7 @@ class Aeropuerto {
 			this.arrayVuelos[codigo].setHoraSalida(hora_salida);
 		}
 	}
+
 }
 
 const aeropuerto = new Aeropuerto("Nombre1", "Ciudad1", 10);
@@ -133,7 +131,6 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 			alert("Datos guardados para el vuelo con codigo: " + codigo);
 		}
 	}
-
 
 	document.getElementById("codigo").value = "";
 	document.getElementById("compania").value = "";
@@ -201,3 +198,60 @@ function mostrarVuelos(compania, horaSalida, horaLlegada) {
 		listaVuelos.appendChild(li);
 	});
 }
+
+function comprobarDni(dni) {
+	let letras = [
+		"T",
+		"R",
+		"W",
+		"A",
+		"G",
+		"M",
+		"Y",
+		"F",
+		"P",
+		"D",
+		"X",
+		"B",
+		"N",
+		"J",
+		"Z",
+		"S",
+		"Q",
+		"V",
+		"H",
+		"L",
+		"C",
+		"K",
+		"E",
+		"T",
+	];
+
+	if (dni.length !== 9) {
+		return false;
+	}
+	let numeros = dni.substring(0, 9);
+	let letra = dni.charAt(8);
+
+	if (isNaN(parseInt(numeros))) {
+		if (typeof letra === "string") {
+			if (letra === letras[numeros % 23]) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function comprobarCorreo(correo) {
+	let emailRegExp = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+	return emailRegExp.test(correo);
+}
+
+function comprobarCodigo(codigo) {
+	if (aeropuerto.consultarVuelo(codigo) === null) {
+		return false;
+	}
+	return true;
+}
+
