@@ -128,7 +128,7 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 	// si no existe lo guarda
 	else {
 		const vuelo = new Vuelo(codigo, compania, hora_llegada, hora_salida);
-		if (!vuelo.getHoraLlegada === null) {
+		if (vuelo.getHoraLlegada !== null) {
 			aeropuerto.guardarVuelo(vuelo);
 			alert("Datos guardados para el vuelo con codigo: " + codigo);
 		}
@@ -190,7 +190,7 @@ function mostrarVuelos(compania, horaSalida, horaLlegada) {
 	// Si no hay vuelos que coincidan con los criterios, mostrar un mensaje
 	if (vuelosFiltrados.length === 0) {
 		listaVuelos.innerHTML =
-			"<li>No se encontraron vuelos con los criterios especificados.</li>";
+			"<li> No se encontraron vuelos con los criterios especificados.</li>";
 		return;
 	}
 

@@ -11,32 +11,75 @@
 </head>
 
 <body>
-    <div id="contenedor1">
-        <form>
-            <ul>
-                <li>
-                    <label for="codigo">Codigo:</label>
-                    <input type="text" id="codigo" name="codigo" />
-                </li>
-                <li>
-                    <label for="compania">Compañia:</label>
-                    <input type="text" id="compania" name="compania" />
-                </li>
-                <li>
-                    <label for="horaSalida">Hora Salida:</label>
-                    <input type="time" id="horaSalida" name="horaSalida" />
-                </li>
-                <li>
-                    <label for="horaLlegada">Hora llegada:</label>
-                    <input type="time" id="horaLlegada" name="horaLlegada" />
-                </li>    
-            </ul>
-            <button id="botonGuardar" type="button">Guardar</button>
-            <button id="botonBuscar" type="button">Buscar</button>
-            <button id="botonMostrarVuelos" type="button">Mostrar</button>
-        </form>
+    <div id="contenedorFormularios">
+        <div id="contenedor1">
+            <form>
+                <h2>Guardar Vuelo</h2>
+                <ul>
+                    <li>
+                        <label for="codigo">Codigo:</label>
+                        <input type="text" id="codigo" name="codigo" />
+                    </li>
+                    <li>
+                        <label for="compania">Compañia:</label>
+                        <input type="text" id="compania" name="compania" />
+                    </li>
+                    <li>
+                        <label for="horaSalida">Hora Salida:</label>
+                        <input type="time" id="horaSalida" name="horaSalida" />
+                    </li>
+                    <li>
+                        <label for="horaLlegada">Hora llegada:</label>
+                        <input type="time" id="horaLlegada" name="horaLlegada" />
+                    </li>
+                </ul>
+                <button id="botonGuardar" type="button">Guardar</button>
+                <button id="botonBuscar" type="button">Buscar</button>
+                <button id="botonMostrarVuelos" type="button">Mostrar</button>
+            </form>
+        </div>
+        <div id="contenedor2">
+            <form>
+                <h2>Reservar vuelo</h2>
+                <ul>
+                    <li>
+                        <label for="dni">DNI:</label>
+                        <input type="text" id="dni" name="dni" />
+                    </li>
+                    <li>
+                        <label for="nombre">Nombre y Apellidos:</label>
+                        <input type="text" id="nombre" name="nombre" />
+                    </li>
+                    <li>
+                        <label for="email">Email:</label>
+                        <input type="text" id="email" name="email" />
+                    </li>
+                    <li>
+                        <label for="idVuelo">Id Vuelo:</label>
+                        <input type="number" id="idVuelo" name="idVuelo" />
+                    </li>
+                    <li>
+                        <label><input type="radio" name="metodoPago" id="efectivo" value="efectivo">Efectivo</label>
+                    </li>
+                    <li>
+                        <label><input type="radio" name="metodoPago" id="credito" value="credito">Tarjeta de
+                            crédito</label>
+                    </li>
+                    <li>
+                        <label><input type="radio" name="metodoPago" id="debito" value="debito">Tarjeta de
+                            débito</label>
+                    </li>
+                    <li>
+                        <label for="comentario">Comentario</label>
+                        <textarea name="comentario" id="comentario"></textarea>
+                    </li>
+                </ul>
+                <button id="botonConfirmar" type="button">Confirmar</button>
+            </form>
+        </div>
+        <div id="listaVuelos"></div>
     </div>
-    <div id="listaVuelos"></div>
+
 </body>
 
 </html>
