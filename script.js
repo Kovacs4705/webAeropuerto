@@ -150,7 +150,7 @@ document.getElementById("botonBuscar").addEventListener("click", () => {
 		alert("No se encontró un vuelo con codigo: " + codigo);
 	}
 });
-document.getElementById("botonMostrarVuelos").addEventListener("click", () => {
+document.getElementById("botonBuscar").addEventListener("click", () => {
 	const companiaBuscada = document.getElementById("compania").value;
 	const horaSalidaBuscada = document.getElementById("horaSalida").value;
 	const horaLlegadaBuscada = document.getElementById("horaLlegada").value;
