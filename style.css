@@ -31,7 +31,7 @@ textarea {
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     height: 60%;
-    margin-top: 5px;
+    margin-top: 5%;
     margin-bottom: 10%;
     padding: 2px 15px;
     max-width: 30%;
@@ -45,7 +45,7 @@ textarea {
     border: 2px solid #d1a684;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 5px;
+    margin-top: 5%;
     margin-bottom: 10%;
     padding: 2px 15px;
     max-width: 30%;
@@ -121,7 +121,7 @@ button:hover {
     float: right;
     margin-left: 5%;
     margin-right: 5%;
-    margin-top: 5px;
+    margin-top: 5%;
     height: 760px;
     width: 100%;
     max-width: 20%;
