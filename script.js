@@ -139,65 +139,61 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 });
 
 document.getElementById("botonBuscar").addEventListener("click", () => {
-	const codigo = parseInt(document.getElementById("codigo").value);
-	const vuelo = aeropuerto.consultarVuelo(codigo);
+	// Obtener los valores ingresados por el usuario
+	const codigo = document.getElementById("codigo").value.trim();
+	const companiaBuscada = document.getElementById("compania").value.trim();
+	const horaSalidaBuscada = document.getElementById("horaSalida").value.trim();
+	const horaLlegadaBuscada = document.getElementById("horaLlegada").value.trim();
 
-	if (vuelo) {
-		document.getElementById("compania").value = vuelo.getCompania();
-		document.getElementById("horaSalida").value = vuelo.getHoraSalida();
-		document.getElementById("horaLlegada").value = vuelo.getHoraLlegada();
+	// Realizar búsqueda dinámica: por código o por otros criterios
+	if (codigo) {
+		// Buscar por código específico
+		const vuelo = aeropuerto.consultarVuelo(parseInt(codigo));
+		mostrarVuelos(vuelo ? [vuelo] : []); // Mostrar solo el vuelo encontrado o nada
+		if (!vuelo) {
+			alert("No se encontró un vuelo con código: " + codigo);
+		}
 	} else {
-		alert("No se encontró un vuelo con codigo: " + codigo);
+		// Buscar por otros criterios
+		const vuelosFiltrados = aeropuerto.arrayVuelos.filter((vuelo) => {
+			const coincideCompania = companiaBuscada
+				? vuelo.getCompania().toLowerCase() === companiaBuscada.toLowerCase()
+				: true;
+			const coincideHoraSalida = horaSalidaBuscada
+				? vuelo.getHoraSalida() === horaSalidaBuscada
+				: true;
+			const coincideHoraLlegada = horaLlegadaBuscada
+				? vuelo.getHoraLlegada() === horaLlegadaBuscada
+				: true;
+
+			return coincideCompania && coincideHoraSalida && coincideHoraLlegada;
+		});
+
+		mostrarVuelos(vuelosFiltrados);
 	}
 });
-document.getElementById("botonBuscar").addEventListener("click", () => {
-	const companiaBuscada = document.getElementById("compania").value;
-	const horaSalidaBuscada = document.getElementById("horaSalida").value;
-	const horaLlegadaBuscada = document.getElementById("horaLlegada").value;
 
-	// Llamar al método que muestra los vuelos según los filtros
-	mostrarVuelos(companiaBuscada, horaSalidaBuscada, horaLlegadaBuscada);
-});
-
-function mostrarVuelos(compania, horaSalida, horaLlegada) {
-	// Limpiar cualquier contenido anterior en la lista
+function mostrarVuelos(vuelos) {
+	// Limpiar la lista antes de mostrar nuevos resultados
 	const listaVuelos = document.getElementById("listaVuelos");
 	listaVuelos.innerHTML = "";
 
-	// Filtrar los vuelos según las condiciones
-	const vuelosFiltrados = aeropuerto.arrayVuelos.filter((vuelo) => {
-		// Si no se ha ingresado ningún valor para Compañía, se incluye ese vuelo
-		const coincideCompania = compania
-			? vuelo.getCompania().toLowerCase() === compania.toLowerCase()
-			: true;
-
-		// Si no se ha ingresado ningún valor para la Hora de salida, se incluye ese vuelo
-		const coincideHoraSalida = horaSalida
-			? vuelo.getHoraSalida() === horaSalida
-			: true;
-
-		// Si no se ha ingresado ningún valor para la Hora de llegada, se incluye ese vuelo
-		const coincideHoraLlegada = horaLlegada
-			? vuelo.getHoraLlegada() === horaLlegada
-			: true;
-
-		return coincideCompania && coincideHoraSalida && coincideHoraLlegada;
-	});
-
-	// Si no hay vuelos que coincidan con los criterios, mostrar un mensaje
-	if (vuelosFiltrados.length === 0) {
+	// Verificar si hay vuelos para mostrar
+	if (vuelos.length === 0) {
 		listaVuelos.innerHTML =
-			"<li> No se encontraron vuelos con los criterios especificados.</li>";
+			"<li>No se encontraron vuelos con los criterios especificados.</li>";
 		return;
 	}
 
-	// Mostrar los vuelos filtrados en la lista
-	vuelosFiltrados.forEach((vuelo) => {
+	// Crear elementos de la lista para cada vuelo encontrado
+	vuelos.forEach((vuelo) => {
 		const li = document.createElement("li");
 		li.textContent = `Código: ${vuelo.getCodigo()}, Compañía: ${vuelo.getCompania()}, Hora de salida: ${vuelo.getHoraSalida()}, Hora de llegada: ${vuelo.getHoraLlegada()}`;
 		listaVuelos.appendChild(li);
 	});
 }
+
+
 
 function comprobarDni(dni) {
 	let letras = [
