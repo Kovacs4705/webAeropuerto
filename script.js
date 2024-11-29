@@ -95,13 +95,13 @@ class Aeropuerto {
 
 		// se llenan solo los campos que se han modificado
 		if (compania != "") {
-			this.arrayVuelos[codigo].setCompannia(compania);
+			vuelo.setCompannia(compania);
 		}
 		if (hora_llegada != "") {
-			this.arrayVuelos[codigo].setHoraLlegada(hora_llegada);
+			vuelo.setHoraLlegada(hora_llegada);
 		}
 		if (hora_salida != "") {
-			this.arrayVuelos[codigo].setHoraSalida(hora_salida);
+			vuelo.setHoraSalida(hora_salida);
 		}
 	}
 }
@@ -131,7 +131,7 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 			alert("Por favor introduzca valores en todos los campos");
 		} else {
 			const vuelo = new Vuelo(codigo, compania, hora_llegada, hora_salida);
-			if (vuelo.getHoraLlegada !== null) {
+			if (vuelo.getHoraLlegada() !== null) {
 				aeropuerto.guardarVuelo(vuelo);
 				alert("Datos guardados para el vuelo con codigo: " + codigo);
 			}
@@ -153,7 +153,6 @@ document.getElementById("botonBuscar").addEventListener("click", () => {
 
 	// Buscar por los criterios
 	const vuelosFiltrados = aeropuerto.arrayVuelos.filter((vuelo) => {
-
 		const coincideCodigo = codigo ? vuelo.getCodigo() === codigo : true;
 		const coincideCompania = companiaBuscada
 			? vuelo.getCompania().toLowerCase() === companiaBuscada.toLowerCase()
@@ -172,7 +171,7 @@ document.getElementById("botonBuscar").addEventListener("click", () => {
 			coincideHoraLlegada
 		);
 	});
-	
+
 	mostrarVuelos(vuelosFiltrados);
 });
 
@@ -224,17 +223,13 @@ function comprobarDni(dni) {
 		"T",
 	];
 
-	if (dni.length !== 9) {
-		return false;
-	}
-	let numeros = dni.substring(0, 9);
-	let letra = dni.charAt(8);
+	let dniRegExp = new RegExp(/^[0-9]{8}[A-Za-z]$/);
 
-	if (isNaN(parseInt(numeros))) {
-		if (typeof letra === "string") {
-			if (letra === letras[numeros % 23]) {
-				return true;
-			}
+	if (dniRegExp.test(dni)) {
+		let letra = dni.charAt(8);
+
+		if (letra === letras[numeros % 23]) {
+			return true;
 		}
 	}
 	return false;
@@ -251,3 +246,65 @@ function comprobarCodigo(codigo) {
 	}
 	return true;
 }
+
+// ---------- FUNCIONALIDAD DEL CONTADOR DE CARACTERES TEXTAREA -----------
+const textArea = document.getElementById("comentario");
+const charRemaining = document.getElementById("charRemaining");
+
+// Límite máximo de caracteres
+const maxChars = 120;
+
+// Función para actualizar el contador
+textArea.addEventListener("input", () => {
+	// Calcula los caracteres restantes
+	const remaining = maxChars - textArea.value.length;
+
+	// Si el usuario se acerca al límite, cambia el estilo
+	if (remaining <= 20) {
+		charRemaining.classList.add("warning");
+	} else {
+		charRemaining.classList.remove("warning");
+	}
+
+	if (remaining <= 0) {
+		textArea.value = textArea.value.slice(0, maxChars);
+	}
+
+	// Actualiza el contador en pantalla
+	charRemaining.textContent = Math.max(remaining, 0);
+});
+
+window.onload = function () {
+	// Comprobar DNI al perder el foco
+	dni.addEventListener("blur", () => {
+		console.log("Evento blur activado");
+		if (!comprobarDni(dni.value)) {
+			dni.classList.add("error");
+			dni.value = "Introduce correctamente el valor del campo";
+		} else {
+			dni.classList.remove("error");
+		}
+	});
+
+	// Comprobar correo al perder el foco
+	const email = document.getElementById("email");
+	email.addEventListener("blur", () => {
+		if (!comprobarCorreo(email.value)) {
+			email.classList.add("error");
+			email.value = "Introduce correctamente el valor del campo";
+		} else {
+			email.classList.remove("error");
+		}
+	});
+
+	// Comprobar código de vuelo al perder el foco
+	const idVuelo = document.getElementById("idVuelo");
+	idVuelo.addEventListener("blur", () => {
+		if (!comprobarCodigo(idVuelo.value)) {
+			idVuelo.classList.add("error");
+			idVuelo.value = "Introduce correctamente el valor del campo";
+		} else {
+			idVuelo.classList.remove("error");
+		}
+	});
+};

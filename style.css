@@ -168,3 +168,26 @@ button:hover {
     border: 2px solid #d1a684;
     box-shadow: 0 4px 8px rgba(166, 123, 91, 0.4);
 }
+
+.contador {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #5b3c11;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+.warning {
+    color: red;
+}
+
+textarea{
+    font-size: 20px;
+    font-weight: bold;
+    color: #5b3c11;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+input.error {
+    border: 2px solid red !important;
+}
