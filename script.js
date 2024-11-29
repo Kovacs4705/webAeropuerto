@@ -90,7 +90,6 @@ class Aeropuerto {
 	modificarVuelo(codigo, compania, hora_llegada, hora_salida) {
 		const vuelo = this.consultarVuelo(codigo);
 		if (!vuelo) {
-			alert(`No se encontró un vuelo con código: ${codigo}`);
 			return;
 		}
 
@@ -105,14 +104,12 @@ class Aeropuerto {
 			this.arrayVuelos[codigo].setHoraSalida(hora_salida);
 		}
 	}
-
 }
 
 const aeropuerto = new Aeropuerto("Nombre1", "Ciudad1", 10);
-console.log(aeropuerto);
 
 document.getElementById("botonGuardar").addEventListener("click", () => {
-	const codigo = parseInt(document.getElementById("codigo").value);
+	const codigo = document.getElementById("codigo").value;
 	const compania = document.getElementById("compania").value;
 	const hora_llegada = document.getElementById("horaLlegada").value;
 	const hora_salida = document.getElementById("horaSalida").value;
@@ -125,10 +122,19 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 
 	// si no existe lo guarda
 	else {
-		const vuelo = new Vuelo(codigo, compania, hora_llegada, hora_salida);
-		if (vuelo.getHoraLlegada !== null) {
-			aeropuerto.guardarVuelo(vuelo);
-			alert("Datos guardados para el vuelo con codigo: " + codigo);
+		if (
+			codigo === "" ||
+			compania === "" ||
+			hora_salida === "" ||
+			hora_llegada === null
+		) {
+			alert("Por favor introduzca valores en todos los campos");
+		} else {
+			const vuelo = new Vuelo(codigo, compania, hora_llegada, hora_salida);
+			if (vuelo.getHoraLlegada !== null) {
+				aeropuerto.guardarVuelo(vuelo);
+				alert("Datos guardados para el vuelo con codigo: " + codigo);
+			}
 		}
 	}
 
@@ -140,37 +146,34 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 
 document.getElementById("botonBuscar").addEventListener("click", () => {
 	// Obtener los valores ingresados por el usuario
-	const codigo = document.getElementById("codigo").value.trim();
-	const companiaBuscada = document.getElementById("compania").value.trim();
-	const horaSalidaBuscada = document.getElementById("horaSalida").value.trim();
-	const horaLlegadaBuscada = document.getElementById("horaLlegada").value.trim();
+	const codigo = document.getElementById("codigo").value;
+	const companiaBuscada = document.getElementById("compania").value;
+	const horaSalidaBuscada = document.getElementById("horaSalida").value;
+	const horaLlegadaBuscada = document.getElementById("horaLlegada").value;
 
-	// Realizar búsqueda dinámica: por código o por otros criterios
-	if (codigo) {
-		// Buscar por código específico
-		const vuelo = aeropuerto.consultarVuelo(parseInt(codigo));
-		mostrarVuelos(vuelo ? [vuelo] : []); // Mostrar solo el vuelo encontrado o nada
-		if (!vuelo) {
-			alert("No se encontró un vuelo con código: " + codigo);
-		}
-	} else {
-		// Buscar por otros criterios
-		const vuelosFiltrados = aeropuerto.arrayVuelos.filter((vuelo) => {
-			const coincideCompania = companiaBuscada
-				? vuelo.getCompania().toLowerCase() === companiaBuscada.toLowerCase()
-				: true;
-			const coincideHoraSalida = horaSalidaBuscada
-				? vuelo.getHoraSalida() === horaSalidaBuscada
-				: true;
-			const coincideHoraLlegada = horaLlegadaBuscada
-				? vuelo.getHoraLlegada() === horaLlegadaBuscada
-				: true;
+	// Buscar por los criterios
+	const vuelosFiltrados = aeropuerto.arrayVuelos.filter((vuelo) => {
 
-			return coincideCompania && coincideHoraSalida && coincideHoraLlegada;
-		});
+		const coincideCodigo = codigo ? vuelo.getCodigo() === codigo : true;
+		const coincideCompania = companiaBuscada
+			? vuelo.getCompania().toLowerCase() === companiaBuscada.toLowerCase()
+			: true;
+		const coincideHoraSalida = horaSalidaBuscada
+			? vuelo.getHoraSalida() === horaSalidaBuscada
+			: true;
+		const coincideHoraLlegada = horaLlegadaBuscada
+			? vuelo.getHoraLlegada() === horaLlegadaBuscada
+			: true;
 
-		mostrarVuelos(vuelosFiltrados);
-	}
+		return (
+			coincideCodigo &&
+			coincideCompania &&
+			coincideHoraSalida &&
+			coincideHoraLlegada
+		);
+	});
+	
+	mostrarVuelos(vuelosFiltrados);
 });
 
 function mostrarVuelos(vuelos) {
@@ -192,8 +195,6 @@ function mostrarVuelos(vuelos) {
 		listaVuelos.appendChild(li);
 	});
 }
-
-
 
 function comprobarDni(dni) {
 	let letras = [
@@ -250,4 +251,3 @@ function comprobarCodigo(codigo) {
 	}
 	return true;
 }
-
