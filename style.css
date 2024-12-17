@@ -4,8 +4,12 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
+    min-height: 100vh;
     flex-direction: column;
+    justify-content: center;
+    /* Centra el contenido verticalmente */
     align-items: center;
+    /* Centra el contenido horizontalmente */
 }
 
 header#mainHeader {
@@ -13,11 +17,17 @@ header#mainHeader {
     border-bottom: 2px solid #d1a684;
     width: 100%;
     padding: 20px 0;
-    margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    /* Hace que el header se quede fijo en la parte superior */
+    top: 0;
+    /* Alinea el header al principio de la página */
+    left: 0;
+    z-index: 1000;
+    /* Asegura que el header esté por encima de otros contenidos */
 }
 
 #headerContent {
@@ -38,6 +48,7 @@ header#mainHeader h1 {
     font-family: 'Times New Roman', Times, serif;
 }
 
+
 h2 {
     text-align: center;
     margin-bottom: 50px;
@@ -49,7 +60,7 @@ textarea {
 }
 
 #contenedorFormularios {
-    display: flex;
+    display: none;
     justify-content: space-between;
     /* Espacia horizontalmente */
     align-items: stretch;
@@ -67,7 +78,7 @@ textarea {
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     height: 60%;
-    margin-top: 5%;
+    margin-top: 10%;
     margin-bottom: 10%;
     padding: 2px 15px;
     max-width: 30%;
@@ -83,7 +94,7 @@ textarea {
     border: 2px solid #d1a684;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 5%;
+    margin-top: 10%;
     margin-bottom: 10%;
     padding: 2px 15px;
     max-width: 30%;
@@ -92,6 +103,21 @@ textarea {
     display: flex;
     flex-direction: column;
     /* Garantiza que el contenido interno no afecte la altura */
+}
+
+#contenedor3 {
+    background-color: #f4e1d2;
+    border: 2px solid #d1a684;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10%;
+    margin-bottom: 10%;
+    padding: 2px 15px;
+    max-width: 30%;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -160,7 +186,7 @@ button:hover {
     float: right;
     margin-left: 5%;
     margin-right: 5%;
-    margin-top: 5%;
+    margin-top: 10%;
     height: 760px;
     width: 100%;
     max-width: 20%;
@@ -181,7 +207,7 @@ button:hover {
     color: red;
 }
 
-textarea{
+textarea {
     font-size: 20px;
     font-weight: bold;
     color: #5b3c11;
@@ -190,4 +216,64 @@ textarea{
 
 input.error {
     border: 2px solid red !important;
+}
+
+#loader {
+    display: none;
+    position: relative;
+    border: 24px solid #d1a684;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: eat 1s linear infinite;
+}
+
+#loader::after,
+#loader::before {
+    content: '';
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #d1a684;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    opacity: 0;
+    animation: move 2s linear infinite;
+}
+
+.loader::before {
+    animation-delay: 1s;
+}
+
+@keyframes eat {
+
+    0%,
+    49% {
+        border-right-color: #d1a684
+    }
+
+    50%,
+    100% {
+        border-right-color: #0000
+    }
+}
+
+@keyframes move {
+    0% {
+        left: 75px;
+        opacity: 1
+    }
+
+    50% {
+        left: 0px;
+        opacity: 1
+    }
+
+    52%,
+    100% {
+        left: -5px;
+        opacity: 0;
+    }
 }

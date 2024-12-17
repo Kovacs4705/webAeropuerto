@@ -308,3 +308,20 @@ window.onload = function () {
 		}
 	});
 };
+
+// ---------------- Formulario iniciar Sesion ---------------
+const inicio = document.getElementById('contenedor3')
+const boton = document.getElementById('iniciarSesion');
+const spinner = document.getElementById('loader');
+const formulario = document.getElementById('contenedorFormularios');
+
+boton.addEventListener('click', () => {
+	inicio.style.display = 'none';
+    boton.style.display = 'none'; // Ocultar el botón
+    spinner.style.display = 'flex'; // Mostrar el spinner
+
+    setTimeout(() => {
+        spinner.style.display = 'none'; // Ocultar el spinner
+        formulario.style.display = 'flex'; // Mostrar el formulario
+    }, 2000); // Esperar 2 segundos
+});
