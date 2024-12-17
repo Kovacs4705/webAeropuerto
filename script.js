@@ -323,5 +323,5 @@ boton.addEventListener('click', () => {
     setTimeout(() => {
         spinner.style.display = 'none'; // Ocultar el spinner
         formulario.style.display = 'flex'; // Mostrar el formulario
-    }, 2000); // Esperar 2 segundos
+    }, 3000); // Esperar 2 segundos
 });

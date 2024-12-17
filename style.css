@@ -106,6 +106,7 @@ textarea {
 }
 
 #contenedor3 {
+    font-family: 'Times New Roman', Times, serif;
     background-color: #f4e1d2;
     border: 2px solid #d1a684;
     border-radius: 5px;
@@ -140,8 +141,9 @@ label {
 
 input[type="text"],
 input[type="time"],
-input[type="number"] {
-    width: calc(100% - 10px);
+input[type="number"],
+input[type="password"] {
+    width: calc(100% - 20px);
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #d1a684;
@@ -155,7 +157,8 @@ input[type="text"]:hover,
 input[type="time"]:hover,
 input[type="text"]:focus,
 input[type="time"]:focus,
-input[type="number"]:focus {
+input[type="number"]:focus,
+input[type="password"]:focus {
     border-color: #a67b5b;
     ;
     outline: none;
