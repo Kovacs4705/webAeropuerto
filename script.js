@@ -321,15 +321,13 @@ boton2.addEventListener('click', () => {
 	boton.style.display = 'none'; // Ocultar el botón
 	spinner.style.display = 'flex'; // Mostrar el spinner
 
-	
+
 
 	const guardar = document.getElementById('contenedor1');
-
+	guardar.style.filter = 'blur(5px)';
 	const campos = guardar.elements;
 
 	for (let i = 0; i < campos.length; i++) {
-		console.log(campos[i]);
-		
 		campos[i].disabled = true; // Reactiva cada campo
 	}
 

@@ -84,7 +84,6 @@ textarea {
     max-width: 30%;
     width: 100%;
     backdrop-filter: blur(10px);
-    display: flex;
     flex-direction: column;
     /* Garantiza que el contenido interno no afecte la altura */
 }
