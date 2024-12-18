@@ -310,18 +310,77 @@ window.onload = function () {
 };
 
 // ---------------- Formulario iniciar Sesion ---------------
-const inicio = document.getElementById('contenedor3')
+const inicio = document.getElementById('contenedor3');
 const boton = document.getElementById('iniciarSesion');
+const boton2 = document.getElementById('invitado');
 const spinner = document.getElementById('loader');
 const formulario = document.getElementById('contenedorFormularios');
 
-boton.addEventListener('click', () => {
+boton2.addEventListener('click', () => {
 	inicio.style.display = 'none';
-    boton.style.display = 'none'; // Ocultar el botón
-    spinner.style.display = 'flex'; // Mostrar el spinner
+	boton.style.display = 'none'; // Ocultar el botón
+	spinner.style.display = 'flex'; // Mostrar el spinner
 
-    setTimeout(() => {
-        spinner.style.display = 'none'; // Ocultar el spinner
-        formulario.style.display = 'flex'; // Mostrar el formulario
-    }, 3000); // Esperar 2 segundos
+	
+
+	const guardar = document.getElementById('contenedor1');
+
+	const campos = guardar.elements;
+
+	for (let i = 0; i < campos.length; i++) {
+		console.log(campos[i]);
+		
+		campos[i].disabled = true; // Reactiva cada campo
+	}
+
+	setTimeout(() => {
+		spinner.style.display = 'none'; // Ocultar el spinner
+		formulario.style.display = 'flex'; // Mostrar el formulario
+	}, 3000); // Esperar 2 segundos
+})
+
+boton.addEventListener('click', () => {
+
+
+	let logeado = false;
+
+	// Array de usuarios y contraseñas
+	let usuarios = [
+		{ "usuario": "david", "contrasenia": "david" },
+		{ "usuario": "alejandro", "contrasenia": "alejandro" }
+	];
+
+	// Convertir el array a JSON (opcional si quieres demostrar JSON.stringify/parse)
+	let textoJSON = JSON.stringify(usuarios);
+	let arrayReconstruido = JSON.parse(textoJSON);
+
+	// Verificar credenciales
+
+	const usuario = document.getElementById('usuario').value;
+	const contrasenia = document.getElementById('contrasenia').value;
+
+	const validarUsuario = arrayReconstruido.find(user => user.usuario === usuario && user.contrasenia === contrasenia);
+
+	if (validarUsuario) {
+		logeado = true;
+		alert("Login exitoso. Puedes añadir vuelos.");
+		inicio.style.display = 'none';
+		boton.style.display = 'none'; // Ocultar el botón
+		spinner.style.display = 'flex'; // Mostrar el spinner
+		setTimeout(() => {
+			spinner.style.display = 'none'; // Ocultar el spinner
+			formulario.style.display = 'flex'; // Mostrar el formulario
+		}, 3000); // Esperar 2 segundos
+	} else {
+		logeado = false;
+		alert("Credenciales incorrectas. Intenta de nuevo.");
+	}
+
+
+});
+
+// ---------------- Confirmar Usuario ---------------- 
+
+document.addEventListener('DOMContentLoaded', () => {
+
 });
