@@ -378,7 +378,3 @@ boton.addEventListener('click', () => {
 });
 
 // ---------------- Confirmar Usuario ---------------- 
-
-document.addEventListener('DOMContentLoaded', () => {
-
-});
