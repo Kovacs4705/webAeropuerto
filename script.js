@@ -176,19 +176,27 @@ document.getElementById("botonBuscar").addEventListener("click", () => {
 });
 
 document.getElementById("botonConfirmar").addEventListener("click", () => {
-
 	let idVuelo = document.getElementById("idVuelo").value;
 	let dni = document.getElementById("dni").value;
 	let nombre = document.getElementById("nombre").value;
 
-	if (validarCampos()) {
-		let resulatdo = confirm("Se reservara un pasaje para el vuelo con codigo: " + idVuelo + "\npara el cliente: " + nombre + "\nCon dni: " + dni);
-		if (resulatdo) {
-			alert("Reserva realizada con exito");
-		}
-		else alert("Se ha cancelado la reserva");
-	}
+	let camposValidados = validarCampos();
+	let pagoComprobado = comprobarMetodoPago();
 
+	if (camposValidados && pagoComprobado) {
+		let resultado = confirm(
+			"Se reservara un pasaje para el vuelo con codigo: " +
+				idVuelo +
+				"\npara el cliente: " +
+				nombre +
+				"\nCon dni: " +
+				dni
+		);
+		if (resultado) {
+			alert("Reserva realizada con exito");
+		} else alert("Se ha cancelado la reserva");
+	}
+	else alert("Datos introdcidos incorrectos");
 });
 
 function mostrarVuelos(vuelos) {
@@ -211,13 +219,32 @@ function mostrarVuelos(vuelos) {
 	});
 }
 
-function comprobarDni(dni) {
-
-	const mensajeError = document.getElementById('errorDni');
-
+function comprobarDni(dni, mensajeError) {
 	let letras = [
-		"T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
-		"N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E", "T"
+		"T",
+		"R",
+		"W",
+		"A",
+		"G",
+		"M",
+		"Y",
+		"F",
+		"P",
+		"D",
+		"X",
+		"B",
+		"N",
+		"J",
+		"Z",
+		"S",
+		"Q",
+		"V",
+		"H",
+		"L",
+		"C",
+		"K",
+		"E",
+		"T",
 	];
 
 	// Comprobar que el DNI tiene exactamente 9 caracteres
@@ -246,35 +273,27 @@ function comprobarDni(dni) {
 
 	// Comprobar que la letra coincide con el cálculo del módulo 23
 	if (letra !== letras[parseInt(numeros, 10) % 23]) {
-		mensajeError.textContent = "La letra del DNI no coincide con el número proporcionado.";
+		mensajeError.textContent =
+			"La letra del DNI no coincide con el número proporcionado.";
 		return false;
 	}
 
 	// Si todas las validaciones pasan
-	mensajeError.textContent = "DNI válido.";
 	return true;
 }
 
-function comprobarCorreo(correo) {
-
-	const mensajeError = document.getElementById('errorEmail');
-
+function comprobarCorreo(correo, mensajeError) {
 	let emailRegExp = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
 	if (!emailRegExp.test(correo)) {
 		mensajeError.textContent = "Formato Incorrecto para el correo";
 		return false;
 	}
-	mensajeError.textContent = "Correo Valido";
-	return true;
 
+	return true;
 }
 
-function comprobarNombre(nombre) {
-
-	const mensajeError = document.getElementById('errorNombre');
-
-
+function comprobarCadena(nombre, mensajeError) {
 	// Eliminar espacios al inicio y al final del nombre
 	nombre = nombre.trim();
 
@@ -286,7 +305,6 @@ function comprobarNombre(nombre) {
 
 	// Comprobar si el nombre contiene solo letras, números y espacios
 	if (/^[A-Za-z0-9\s]+$/.test(nombre)) {
-		mensajeError.textContent = "Campo válido.";
 		return true;
 	} else {
 		mensajeError.textContent = "El campo contiene caracteres no permitidos.";
@@ -294,16 +312,30 @@ function comprobarNombre(nombre) {
 	}
 }
 
-function comprobarCodigo(codigo) {
-
-	const mensajeError = document.getElementById('errorIdVuelo');
-
+function comprobarCodigo(codigo, mensajeError) {
 	if (aeropuerto.consultarVuelo(codigo) === null) {
-		mensajeError.textContent = "No existe vuelo con el codigo introducido"
+		mensajeError.textContent = "No existe vuelo con el codigo introducido";
 		return false;
 	}
-	mensajeError.textContent = "Codigo de vuelo correcto";
 	return true;
+}
+
+function comprobarMetodoPago() {
+	esValido = true;
+	console.log("Aqui llego");
+
+	// Validar el campo Método de Pago (al menos uno debe estar seleccionado)
+	const metodoPago = document.querySelector('input[name="metodoPago"]:checked');
+	const errorMetodoPago = document.getElementById("errorMetodoPago");
+	if (!metodoPago) {
+		console.log("Aqui llego");
+		
+		mostrarError(errorMetodoPago, "Debe seleccionar un método de pago.");
+		esValido = false;
+	} else {
+		mostrarExito(errorMetodoPago);
+	}
+	return esValido;
 }
 
 // ---------- FUNCIONALIDAD DEL CONTADOR DE CARACTERES TEXTAREA -----------
@@ -339,44 +371,33 @@ function validarCampos() {
 	// Lista de campos a validar
 	const camposFormulario = [
 		{ id: "dni", funcionValidacion: comprobarDni },
-		{ id: "nombre", funcionValidacion: comprobarNombre },
-		{ id: "apellidos", funcionValidacion: comprobarNombre },
+		{ id: "nombre", funcionValidacion: comprobarCadena },
+		{ id: "apellidos", funcionValidacion: comprobarCadena },
 		{ id: "email", funcionValidacion: comprobarCorreo },
-		{ id: "idVuelo", funcionValidacion: comprobarCodigo }
+		{ id: "idVuelo", funcionValidacion: comprobarCodigo },
 	];
 
 	// Recorrer los campos y validar
-	camposFormulario.forEach(campo => {
+	camposFormulario.forEach((campo) => {
 		const elemento = document.getElementById(campo.id);
-		const errorMsg = document.getElementById('error' + campo.id.charAt(0).toUpperCase() + campo.id.slice(1));
+		const errorMsg = document.getElementById(
+			"error" + campo.id.charAt(0).toUpperCase() + campo.id.slice(1)
+		);
 
-		// Evento 'blur' (cuando el campo pierde el foco)
-		elemento.addEventListener("blur", () => {
-			// Verificar si el campo está vacío
-			if (elemento.value.trim() === "") {
-				mostrarError(errorMsg, "Este campo no puede estar vacío.");
+		// Verificar si el campo está vacío
+		if (elemento.value.trim() === "") {
+			mostrarError(errorMsg, "Este campo no puede estar vacío.");
+			camposValidos = false;
+		} else {
+			// Validar el campo con su función específica
+			if (!campo.funcionValidacion(elemento.value, errorMsg)) {
+				mostrarError(errorMsg);
 				camposValidos = false;
 			} else {
-				// Validar el campo con su función específica
-				if (!campo.funcionValidacion(elemento.value)) {
-					mostrarError(errorMsg);
-					camposValidos = false;
-				} else {
-					mostrarExito(errorMsg, elemento);
-				}
+				mostrarExito(errorMsg, elemento);
 			}
-		});
+		}
 	});
-
-	// Validar el campo Método de Pago (al menos uno debe estar seleccionado)
-	const metodoPago = document.querySelector('input[name="metodoPago"]:checked');
-	const errorMetodoPago = document.getElementById('errorMetodoPago');
-	if (!metodoPago) {
-		mostrarError(errorMetodoPago, "Debe seleccionar un método de pago.");
-		camposValidos = false;
-	} else {
-		mostrarExito(errorMetodoPago);
-	}
 
 	return camposValidos;
 }
@@ -387,7 +408,6 @@ function mostrarError(errorMsg, mensaje = null) {
 	}
 	errorMsg.classList.remove("mensaje");
 	errorMsg.classList.add("noValido");
-
 }
 
 function mostrarExito(errorMsg, elemento = null) {
@@ -399,53 +419,102 @@ function mostrarExito(errorMsg, elemento = null) {
 }
 
 window.onload = function () {
-	const validar = validarCampos();
+	document.getElementById("dni").addEventListener("blur", () => {
+		if (
+			!comprobarDni(
+				document.getElementById("dni").value,
+				document.getElementById("errorDni")
+			)
+		) {
+			mostrarError(document.getElementById("errorDni"));
+		}
+		else mostrarExito(document.getElementById("errorDni"));
+	});
+
+	document.getElementById("nombre").addEventListener("blur", () => {
+		if (
+			!comprobarCadena(
+				document.getElementById("nombre").value,
+				document.getElementById("errorNombre")
+			)
+		) {
+			mostrarError(document.getElementById("errorNombre"));
+		} else mostrarExito(document.getElementById("errorNombre"));
+	});
+
+	document.getElementById("apellidos").addEventListener("blur", () => {
+		if (
+			!comprobarCadena(
+				document.getElementById("apellidos").value,
+				document.getElementById("errorApellidos")
+			)
+		) {
+			mostrarError(document.getElementById("errorApellidos"));
+		} else mostrarExito(document.getElementById("errorApellidos"));
+	});
+
+	document.getElementById("email").addEventListener("blur", () => {
+		if (
+			!comprobarCorreo(
+				document.getElementById("email").value,
+				document.getElementById("errorEmail")
+			)
+		) {
+			mostrarError(document.getElementById("errorEmail"));
+		} else mostrarExito(document.getElementById("errorEmail"));
+	});
+
+	document.getElementById("idVuelo").addEventListener("blur", () => {
+		if (
+			!comprobarCodigo(
+				document.getElementById("idVuelo").value,
+				document.getElementById("errorIdVuelo")
+			)
+		) {
+			mostrarError(document.getElementById("errorIdVuelo"));
+		} else mostrarExito(document.getElementById("errorIdVuelo"));
+	});
 };
 
-
 // ---------------- Formulario iniciar Sesion ---------------
-const inicio = document.getElementById('contenedor3');
-const boton = document.getElementById('iniciarSesion');
-const boton2 = document.getElementById('invitado');
-const spinner = document.getElementById('loader');
-const formulario = document.getElementById('contenedorFormularios');
+const inicio = document.getElementById("contenedor3");
+const boton = document.getElementById("iniciarSesion");
+const boton2 = document.getElementById("invitado");
+const spinner = document.getElementById("loader");
+const formulario = document.getElementById("contenedorFormularios");
 
-boton2.addEventListener('click', () => {
-	inicio.style.display = 'none';
-	boton.style.display = 'none'; // Ocultar el botón
-	spinner.style.display = 'flex'; // Mostrar el spinner
+boton2.addEventListener("click", () => {
+	inicio.style.display = "none";
+	boton.style.display = "none"; // Ocultar el botón
+	spinner.style.display = "flex"; // Mostrar el spinner
 
-
-
-	const guardar = document.getElementById('contenedor1');
-	guardar.style.filter = 'blur(5px)';
+	const guardar = document.getElementById("contenedor1");
+	guardar.style.filter = "blur(5px)";
 	const campos = guardar.elements;
 
 	for (let i = 0; i < campos.length; i++) {
 		campos[i].disabled = true;
 	}
-	campos['botonGuardar'].style.transition = 'none';
-	campos['botonBuscar'].style.transition = 'none';
-	campos['botonGuardar'].style.transform = 'none';
-	campos['botonBuscar'].style.transform = 'none';
-	campos['botonGuardar'].style.boxShadow = 'none';
-	campos['botonBuscar'].style.boxShadow = 'none';
+	campos["botonGuardar"].style.transition = "none";
+	campos["botonBuscar"].style.transition = "none";
+	campos["botonGuardar"].style.transform = "none";
+	campos["botonBuscar"].style.transform = "none";
+	campos["botonGuardar"].style.boxShadow = "none";
+	campos["botonBuscar"].style.boxShadow = "none";
 
 	setTimeout(() => {
-		spinner.style.display = 'none'; // Ocultar el spinner
-		formulario.style.display = 'flex'; // Mostrar el formulario
+		spinner.style.display = "none"; // Ocultar el spinner
+		formulario.style.display = "flex"; // Mostrar el formulario
 	}, 3000); // Esperar 2 segundos
-})
+});
 
-boton.addEventListener('click', () => {
-
-
+boton.addEventListener("click", () => {
 	let logeado = false;
 
 	// Array de usuarios y contraseñas
 	let usuarios = [
-		{ "usuario": "david", "contrasenia": "david" },
-		{ "usuario": "alejandro", "contrasenia": "alejandro" }
+		{ usuario: "david", contrasenia: "david" },
+		{ usuario: "alejandro", contrasenia: "alejandro" },
 	];
 
 	// Convertir el array a JSON (opcional si quieres demostrar JSON.stringify/parse)
@@ -454,27 +523,27 @@ boton.addEventListener('click', () => {
 
 	// Verificar credenciales
 
-	const usuario = document.getElementById('usuario').value;
-	const contrasenia = document.getElementById('contrasenia').value;
+	const usuario = document.getElementById("usuario").value;
+	const contrasenia = document.getElementById("contrasenia").value;
 
-	const validarUsuario = arrayReconstruido.find(user => user.usuario === usuario && user.contrasenia === contrasenia);
+	const validarUsuario = arrayReconstruido.find(
+		(user) => user.usuario === usuario && user.contrasenia === contrasenia
+	);
 
 	if (validarUsuario) {
 		logeado = true;
 		alert("Login exitoso. Puedes añadir vuelos.");
-		inicio.style.display = 'none';
-		boton.style.display = 'none'; // Ocultar el botón
-		spinner.style.display = 'flex'; // Mostrar el spinner
+		inicio.style.display = "none";
+		boton.style.display = "none"; // Ocultar el botón
+		spinner.style.display = "flex"; // Mostrar el spinner
 		setTimeout(() => {
-			spinner.style.display = 'none'; // Ocultar el spinner
-			formulario.style.display = 'flex'; // Mostrar el formulario
+			spinner.style.display = "none"; // Ocultar el spinner
+			formulario.style.display = "flex"; // Mostrar el formulario
 		}, 3000); // Esperar 2 segundos
 	} else {
 		logeado = false;
 		alert("Credenciales incorrectas. Intenta de nuevo.");
 	}
-
-
 });
 
-// ---------------- Confirmar Usuario ---------------- 
+// ---------------- Confirmar Usuario ----------------
