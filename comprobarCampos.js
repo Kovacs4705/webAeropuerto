@@ -1,3 +1,5 @@
+// David Kovacs y Alejandro Solar
+
 function comprobarCampoVacio(campo, mensaje) {
 	if (campo.trim() === "") {
 		console.log("Estoy Aqui");

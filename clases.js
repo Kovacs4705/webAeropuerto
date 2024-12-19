@@ -1,3 +1,5 @@
+// David Kovacs y Alejandro Solar
+
 class Vuelo {
 	constructor(codigo, compannia, hora_llegada, hora_salida) {
 		this.codigo = codigo;

@@ -1,3 +1,5 @@
+// David Kovacs y Alejandro Solar
+
 // funcion para obtener la cookie por su nombre (W3schools)
 function getCookie(cname) {
 	let name = cname + "=";

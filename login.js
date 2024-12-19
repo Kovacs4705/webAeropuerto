@@ -1,3 +1,5 @@
+// David Kovacs y Alejandro Solar
+
 // Crear el aeropuerto
 const aeropuerto = new Aeropuerto("Nombre1", "Ciudad1", 10);
 

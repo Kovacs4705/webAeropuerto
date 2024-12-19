@@ -1,3 +1,5 @@
+// David Kovacs y Alejandro Solar
+
 document.getElementById("botonGuardar").addEventListener("click", () => {
 	const codigo = document.getElementById("codigo").value;
 	const compania = document.getElementById("compania").value;

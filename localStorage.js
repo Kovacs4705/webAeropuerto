@@ -1,3 +1,5 @@
+// David Kovacs y Alejandro Solar
+
 function getVisitas() {
 	return parseInt(localStorage.getItem("contador2")) || 0;
 }

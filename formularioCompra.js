@@ -1,3 +1,5 @@
+// David Kovacs y Alejandro Solar
+
 // ---------------- Cargar Datos y guardarlos ----------------
 // Acceso al formulario
 const reservar = document.getElementById("formularioCompra");
