@@ -207,4 +207,6 @@ function validarCampos(blur) {
 
 window.onload = function () {
 	validacion = validarCampos(true);
+	incrementarVisitas();  // Función para el contador de cookies
+    incrementarVisitasLocalStorage();  // Función para el contador de localStorage
 };

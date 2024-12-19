@@ -1,18 +1,22 @@
-// ---------------- Cargar Datos y guardarlos ---------------- 
+// ---------------- Cargar Datos y guardarlos ----------------
 // Acceso al formulario
 const reservar = document.getElementById("formularioCompra");
 
 // Botón "Recordar" - Guardar datos en localStorage
 document.getElementById("botonRecordar").addEventListener("click", () => {
-	const datosFormulario = {
-		dni: reservar.querySelector("#dni").value,
-		nombre: reservar.querySelector("#nombre").value,
-		apellidos: reservar.querySelector("#apellidos").value,
-		email: reservar.querySelector("#email").value,
-	};
+	if (!validarCampos(false)) {
+		alert("Datos Incorrectos, no se guardará la información");
+	} else {
+		const datosFormulario = {
+			dni: reservar.querySelector("#dni").value,
+			nombre: reservar.querySelector("#nombre").value,
+			apellidos: reservar.querySelector("#apellidos").value,
+			email: reservar.querySelector("#email").value,
+		};
 
-	establecerLocalStorage("datosFormulario", JSON.stringify(datosFormulario));
-	alert("Datos guardados en localStorage.");
+		establecerLocalStorage("datosFormulario", JSON.stringify(datosFormulario));
+		alert("Datos guardados en localStorage.");
+	}
 });
 
 // Botón "Cargar" - Recuperar datos de localStorage

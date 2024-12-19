@@ -301,3 +301,8 @@ input.error {
         opacity: 0;
     }
 }
+
+#barraBotones{
+    display: flex;
+    justify-content: space-around;
+}

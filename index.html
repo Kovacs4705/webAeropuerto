@@ -1,128 +1,175 @@
 <!DOCTYPE html>
 <html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script type="text/javascript" src="clases.js" defer></script>
+		<script type="text/javascript" src="auxiliares.js" defer></script>
+		<script type="text/javascript" src="botones.js" defer></script>
+		<script type="text/javascript" src="comprobarCampos.js" defer></script>
+		<script type="text/javascript" src="formularioCompra.js" defer></script>
+		<script type="text/javascript" src="login.js" defer></script>
+		<script type="text/javascript" src="cookies.js" defer></script>
+        <script type="text/javascript" src="localStorage.js" defer></script>
+		<link rel="stylesheet" href="style.css" />
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+			rel="stylesheet"
+		/>
+		<!-- Font Awesome -->
+		<title>Aeropuerto</title>
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="clases.js" defer></script>
-    <script type="text/javascript" src="auxiliares.js" defer></script>
-    <script type="text/javascript" src="botones.js" defer></script>
-    <script type="text/javascript" src="comprobarCampos.js" defer></script>
-    <script type="text/javascript" src="formularioCompra.js" defer></script>
-    <script type="text/javascript" src="login.js" defer></script>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <title>Aeropuerto</title>
-</head>
+	<body>
+		<header id="mainHeader">
+			<div id="headerContent">
+				<i class="fas fa-plane-departure"></i>
+				<h1>Vuelos Kale</h1>
+			</div>
+		</header>
+		<div id="contenedorFormularios">
+			<form id="contenedor1">
+				<h2>Guardar Vuelo</h2>
+				<ul>
+					<li>
+						<label for="codigo">Codigo:</label>
+						<input type="text" id="codigo" name="codigo" />
+					</li>
+					<li>
+						<label for="compania">Compañia:</label>
+						<input type="text" id="compania" name="compania" />
+					</li>
+					<li>
+						<label for="horaSalida">Hora Salida:</label>
+						<input type="time" id="horaSalida" name="horaSalida" />
+					</li>
+					<li>
+						<label for="horaLlegada">Hora llegada:</label>
+						<input type="time" id="horaLlegada" name="horaLlegada" />
+					</li>
+				</ul>
+				<div id="barraBotones">
+					<button id="botonGuardar" type="button">Guardar</button>
+					<button id="botonBuscar" type="button">Buscar</button>
+				</div>
+			</form>
 
-<body>
-    <header id="mainHeader">
-        <div id="headerContent">
-            <i class="fas fa-plane-departure"></i>
-            <h1>Vuelos Kale</h1>
-        </div>
-    </header>
-    <div id="contenedorFormularios">
+			<div id="contenedor2">
+				<form id="formularioCompra">
+					<h2>Reservar vuelo</h2>
+					<ul>
+						<li>
+							<label for="dni">DNI:</label>
+							<input type="text" id="dni" name="dni" required />
+							<div id="errorDni" class="mensaje">Aqui estoy</div>
+						</li>
+						<li>
+							<label for="nombre">Nombre:</label>
+							<input type="text" id="nombre" name="nombre" required />
+							<div id="errorNombre" class="mensaje">Aqui estoy</div>
+						</li>
+						<li>
+							<label for="apellidos">Apellidos:</label>
+							<input type="text" id="apellidos" name="apellidos" required />
+							<div id="errorApellidos" class="mensaje">Aqui estoy</div>
+						</li>
+						<li>
+							<label for="email">Email:</label>
+							<input type="text" id="email" name="email" required />
+							<div id="errorEmail" class="mensaje">Aqui estoy</div>
+						</li>
+						<li>
+							<label for="idVuelo">Id Vuelo:</label>
+							<input type="text" id="idVuelo" name="idVuelo" required />
+							<div id="errorIdVuelo" class="mensaje">Aqui estoy</div>
+						</li>
+						<li>
+							<label
+								><input
+									type="radio"
+									name="metodoPago"
+									id="efectivo"
+									value="efectivo"
+								/>Efectivo</label
+							>
+						</li>
+						<li>
+							<label
+								><input
+									type="radio"
+									name="metodoPago"
+									id="credito"
+									value="credito"
+								/>Tarjeta de crédito</label
+							>
+						</li>
+						<li>
+							<label
+								><input
+									type="radio"
+									name="metodoPago"
+									id="debito"
+									value="debito"
+								/>Tarjeta de débito</label
+							>
+						</li>
+						<div id="errorMetodoPago" class="mensaje">Aqui estoy</div>
+						<li>
+							<label for="comentario">Comentario</label>
+							<textarea
+								name="comentario"
+								id="comentario"
+								placeholder="Dejanos tu comentario aqui"
+							></textarea>
+							<p class="contador">
+								Caracteres restantes: <span id="charRemaining">120</span>
+							</p>
+						</li>
+					</ul>
+					<div id="barraBotones">
+						<button id="botonConfirmar" type="button">Confirmar</button>
+						<button id="botonRecordar" type="button">Recuerdame</button>
+						<button id="botonCargar" type="button">Cargar Datos</button>
+					</div>
+				</form>
+			</div>
+			<div id="listaVuelos">
+				<ul id="contenedorVuelos"></ul>
+			</div>
+		</div>
+		<div id="contenedor3">
+			<form id="login">
+				<h2>Incio Sesión</h2>
+				<ul>
+					<li>
+						<label for="usuario">usuario:</label>
+						<input type="text" id="usuario" name="usuario" required />
+					</li>
+					<li>
+						<label for="contrasenia">Contraseña:</label>
+						<input
+							type="password"
+							id="contrasenia"
+							name="contrasenia"
+							required
+						/>
+					</li>
+					<li>
+                        <h1>Contador de Visitas</h1>
+                        <p id="contador1">Numero de visitas (Cookie): 0</p>
+                        <p id="contador2">Numero de visitas (LocalStorage): 0</p>
+                    </li>
+				</ul>
 
-        <form id="contenedor1">
-            <h2>Guardar Vuelo</h2>
-            <ul>
-                <li>
-                    <label for="codigo">Codigo:</label>
-                    <input type="text" id="codigo" name="codigo" />
-                </li>
-                <li>
-                    <label for="compania">Compañia:</label>
-                    <input type="text" id="compania" name="compania" />
-                </li>
-                <li>
-                    <label for="horaSalida">Hora Salida:</label>
-                    <input type="time" id="horaSalida" name="horaSalida" />
-                </li>
-                <li>
-                    <label for="horaLlegada">Hora llegada:</label>
-                    <input type="time" id="horaLlegada" name="horaLlegada" />
-                </li>
-            </ul>
-            <button id="botonGuardar" type="button">Guardar</button>
-            <button id="botonBuscar" type="button">Buscar</button>
-        </form>
-
-        <div id="contenedor2">
-            <form id="formularioCompra">
-                <h2>Reservar vuelo</h2>
-                <ul>
-                    <li>
-                        <label for="dni">DNI:</label>
-                        <input type="text" id="dni" name="dni" required />
-                        <div id="errorDni" class="mensaje">Aqui estoy</div>
-                    </li>
-                    <li>
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" required />
-                        <div id="errorNombre" class="mensaje">Aqui estoy</div>
-                    </li>
-                    <li>
-                        <label for="apellidos">Apellidos:</label>
-                        <input type="text" id="apellidos" name="apellidos" required />
-                        <div id="errorApellidos" class="mensaje">Aqui estoy</div>
-                    </li>
-                    <li>
-                        <label for="email">Email:</label>
-                        <input type="text" id="email" name="email" required />
-                        <div id="errorEmail" class="mensaje">Aqui estoy</div>
-                    </li>
-                    <li>
-                        <label for="idVuelo">Id Vuelo:</label>
-                        <input type="text" id="idVuelo" name="idVuelo" required />
-                        <div id="errorIdVuelo" class="mensaje">Aqui estoy</div>
-                    </li>
-                    <li>
-                        <label><input type="radio" name="metodoPago" id="efectivo" value="efectivo">Efectivo</label>
-                    </li>
-                    <li>
-                        <label><input type="radio" name="metodoPago" id="credito" value="credito">Tarjeta de
-                            crédito</label>
-                    </li>
-                    <li>
-                        <label><input type="radio" name="metodoPago" id="debito" value="debito">Tarjeta de
-                            débito</label>
-                    </li>
-                    <div id="errorMetodoPago" class="mensaje">Aqui estoy</div>
-                    <li>
-                        <label for="comentario">Comentario</label>
-                        <textarea name="comentario" id="comentario" placeholder="Dejanos tu comentario aqui"></textarea>
-                        <p class="contador">Caracteres restantes: <span id="charRemaining">120</span></p>
-                    </li>
-                </ul>
-                <button id="botonConfirmar" type="button">Confirmar</button>
-                <button id="botonRecordar" type="button">Recuerdame</button>
-                <button id="botonCargar" type="button">Cargar Datos</button>
-            </form>
-        </div>
-        <div id="listaVuelos">
-            <ul id="contenedorVuelos"></ul>
-        </div>
-    </div>
-    <div id="contenedor3">
-        <form id="login">
-            <h2>Incio Sesión</h2>
-            <ul>
-                <li>
-                    <label for="usuario">usuario:</label>
-                    <input type="text" id="usuario" name="usuario" required />
-                </li>
-                <li>
-                    <label for="contrasenia">Contraseña:</label>
-                    <input type="password" id="contrasenia" name="contrasenia" required />
-                </li>
-            </ul>
-            <button id="iniciarSesion" type="button">Login</button>
-            <button id="invitado" type="button">invitado</button>
-        </form>
-    </div>
-    <div id="contenedor4"><span id="loader"></span></div>
-</body>
-
+				
+				<div id="barraBotones">
+                    <button id="iniciarSesion" type="button">Login</button>
+					<button id="invitado" type="button">invitado</button>
+                    <button id="borrarCookie" type="button">Resetear Cookie</button>
+                    <button id="borrarLocalStorage" type="button">Resetear LocalStorage</button>
+				</div>
+			</form>
+		</div>
+		<div id="contenedor4"><span id="loader"></span></div>
+	</body>
 </html>
