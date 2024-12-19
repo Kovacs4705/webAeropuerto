@@ -44,3 +44,6 @@ function incrementarVisitas() {
 
 // Al pulsar el boton elimina la cookie
 document.getElementById("borrarCookie").onclick = deleteCookie;
+
+
+//Pd: si no funcionan recargar las cookies, prueba a abrirlo desde live server

@@ -190,14 +190,10 @@ button:hover {
     margin-left: 5%;
     margin-right: 5%;
     margin-top: 10%;
-    height: 760px;
     width: 100%;
     max-width: 20%;
     overflow-y: auto;
     box-sizing: border-box;
-    background-color: #fef6e4;
-    border: 2px solid #d1a684;
-    box-shadow: 0 4px 8px rgba(166, 123, 91, 0.4);
 }
 
 #contenedorVuelos {
@@ -302,7 +298,47 @@ input.error {
     }
 }
 
-#barraBotones{
+#barraBotones {
     display: flex;
     justify-content: space-around;
+}
+
+/* Tabla estilizada */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+thead tr {
+    background-color: #d1a684;
+        /* Color de fondo del encabezado */
+        color: #ffffff;
+    /* Color del texto del encabezado */
+    text-align: center;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    /* Borde de las celdas */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f3f3f3;
+    /* Color de fondo de las filas pares */
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+    /* Color de fondo al pasar el cursor */
+    cursor: pointer;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+    /* Color de fondo de las filas impares */
 }
