@@ -328,8 +328,14 @@ boton2.addEventListener('click', () => {
 	const campos = guardar.elements;
 
 	for (let i = 0; i < campos.length; i++) {
-		campos[i].disabled = true; // Reactiva cada campo
+		campos[i].disabled = true;
 	}
+	campos['botonGuardar'].style.transition = 'none';
+	campos['botonBuscar'].style.transition = 'none';
+	campos['botonGuardar'].style.transform = 'none';
+	campos['botonBuscar'].style.transform = 'none';
+	campos['botonGuardar'].style.boxShadow = 'none';
+	campos['botonBuscar'].style.boxShadow = 'none';
 
 	setTimeout(() => {
 		spinner.style.display = 'none'; // Ocultar el spinner
