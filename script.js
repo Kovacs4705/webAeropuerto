@@ -116,7 +116,7 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 
 	// si existe el vuelo con ese codigo lo modifica
 	if (aeropuerto.consultarVuelo(codigo) != null) {
-		Aeropuerto.modificarVuelo(codigo, compania, hora_llegada, hora_salida);
+		aeropuerto.modificarVuelo(codigo, compania, hora_llegada, hora_salida);
 		alert("Datos guardados para el vuelo con codigo: " + codigo);
 	}
 
@@ -175,6 +175,22 @@ document.getElementById("botonBuscar").addEventListener("click", () => {
 	mostrarVuelos(vuelosFiltrados);
 });
 
+document.getElementById("botonConfirmar").addEventListener("click", () => {
+
+	let idVuelo = document.getElementById("idVuelo").value;
+	let dni = document.getElementById("dni").value;
+	let nombre = document.getElementById("nombre").value;
+
+	if (validarCampos()) {
+		let resulatdo = confirm("Se reservara un pasaje para el vuelo con codigo: " + idVuelo + "\npara el cliente: " + nombre + "\nCon dni: " + dni);
+		if (resulatdo) {
+			alert("Reserva realizada con exito");
+		}
+		else alert("Se ha cancelado la reserva");
+	}
+
+});
+
 function mostrarVuelos(vuelos) {
 	// Limpiar la lista antes de mostrar nuevos resultados
 	const listaVuelos = document.getElementById("listaVuelos");
@@ -196,54 +212,97 @@ function mostrarVuelos(vuelos) {
 }
 
 function comprobarDni(dni) {
+
+	const mensajeError = document.getElementById('errorDni');
+
 	let letras = [
-		"T",
-		"R",
-		"W",
-		"A",
-		"G",
-		"M",
-		"Y",
-		"F",
-		"P",
-		"D",
-		"X",
-		"B",
-		"N",
-		"J",
-		"Z",
-		"S",
-		"Q",
-		"V",
-		"H",
-		"L",
-		"C",
-		"K",
-		"E",
-		"T",
+		"T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
+		"N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E", "T"
 	];
 
-	let dniRegExp = new RegExp(/^[0-9]{8}[A-Za-z]$/);
-
-	if (dniRegExp.test(dni)) {
-		let letra = dni.charAt(8);
-
-		if (letra === letras[numeros % 23]) {
-			return true;
-		}
+	// Comprobar que el DNI tiene exactamente 9 caracteres
+	if (dni.length !== 9) {
+		mensajeError.textContent = "El DNI debe tener exactamente 9 caracteres.";
+		return false;
 	}
-	return false;
+
+	let numeros = dni.substring(0, 8);
+	let letra = dni.charAt(8);
+
+	// Comprobar que los primeros 8 caracteres son números
+	if (!/^[0-9]{8}$/.test(numeros)) {
+		mensajeError.textContent = "Los primeros 8 caracteres deben ser números.";
+		return false;
+	}
+
+	// Comprobar que el noveno carácter es una letra
+	if (!/^[A-Za-z]$/.test(letra)) {
+		mensajeError.textContent = "El noveno carácter debe ser una letra.";
+		return false;
+	}
+
+	// Convertir la letra a mayúscula para comparación
+	letra = letra.toUpperCase();
+
+	// Comprobar que la letra coincide con el cálculo del módulo 23
+	if (letra !== letras[parseInt(numeros, 10) % 23]) {
+		mensajeError.textContent = "La letra del DNI no coincide con el número proporcionado.";
+		return false;
+	}
+
+	// Si todas las validaciones pasan
+	mensajeError.textContent = "DNI válido.";
+	return true;
 }
 
 function comprobarCorreo(correo) {
+
+	const mensajeError = document.getElementById('errorEmail');
+
 	let emailRegExp = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-	return emailRegExp.test(correo);
+
+	if (!emailRegExp.test(correo)) {
+		mensajeError.textContent = "Formato Incorrecto para el correo";
+		return false;
+	}
+	mensajeError.textContent = "Correo Valido";
+	return true;
+
+}
+
+function comprobarNombre(nombre) {
+
+	const mensajeError = document.getElementById('errorNombre');
+
+
+	// Eliminar espacios al inicio y al final del nombre
+	nombre = nombre.trim();
+
+	// Comprobar si el nombre contiene solo números (incluso con espacios)
+	if (/^[0-9\s]+$/.test(nombre)) {
+		mensajeError.textContent = "El campo no puede contener solo números.";
+		return false;
+	}
+
+	// Comprobar si el nombre contiene solo letras, números y espacios
+	if (/^[A-Za-z0-9\s]+$/.test(nombre)) {
+		mensajeError.textContent = "Campo válido.";
+		return true;
+	} else {
+		mensajeError.textContent = "El campo contiene caracteres no permitidos.";
+		return false;
+	}
 }
 
 function comprobarCodigo(codigo) {
+
+	const mensajeError = document.getElementById('errorIdVuelo');
+
 	if (aeropuerto.consultarVuelo(codigo) === null) {
+		mensajeError.textContent = "No existe vuelo con el codigo introducido"
 		return false;
 	}
+	mensajeError.textContent = "Codigo de vuelo correcto";
 	return true;
 }
 
@@ -274,40 +333,75 @@ textArea.addEventListener("input", () => {
 	charRemaining.textContent = Math.max(remaining, 0);
 });
 
+function validarCampos() {
+	let camposValidos = true;
+
+	// Lista de campos a validar
+	const camposFormulario = [
+		{ id: "dni", funcionValidacion: comprobarDni },
+		{ id: "nombre", funcionValidacion: comprobarNombre },
+		{ id: "apellidos", funcionValidacion: comprobarNombre },
+		{ id: "email", funcionValidacion: comprobarCorreo },
+		{ id: "idVuelo", funcionValidacion: comprobarCodigo }
+	];
+
+	// Recorrer los campos y validar
+	camposFormulario.forEach(campo => {
+		const elemento = document.getElementById(campo.id);
+		const errorMsg = document.getElementById('error' + campo.id.charAt(0).toUpperCase() + campo.id.slice(1));
+
+		// Evento 'blur' (cuando el campo pierde el foco)
+		elemento.addEventListener("blur", () => {
+			// Verificar si el campo está vacío
+			if (elemento.value.trim() === "") {
+				mostrarError(errorMsg, "Este campo no puede estar vacío.");
+				camposValidos = false;
+			} else {
+				// Validar el campo con su función específica
+				if (!campo.funcionValidacion(elemento.value)) {
+					mostrarError(errorMsg);
+					camposValidos = false;
+				} else {
+					mostrarExito(errorMsg, elemento);
+				}
+			}
+		});
+	});
+
+	// Validar el campo Método de Pago (al menos uno debe estar seleccionado)
+	const metodoPago = document.querySelector('input[name="metodoPago"]:checked');
+	const errorMetodoPago = document.getElementById('errorMetodoPago');
+	if (!metodoPago) {
+		mostrarError(errorMetodoPago, "Debe seleccionar un método de pago.");
+		camposValidos = false;
+	} else {
+		mostrarExito(errorMetodoPago);
+	}
+
+	return camposValidos;
+}
+
+function mostrarError(errorMsg, mensaje = null) {
+	if (mensaje) {
+		errorMsg.textContent = mensaje;
+	}
+	errorMsg.classList.remove("mensaje");
+	errorMsg.classList.add("noValido");
+
+}
+
+function mostrarExito(errorMsg, elemento = null) {
+	errorMsg.textContent = "";
+	errorMsg.classList.remove("noValido");
+	if (elemento) {
+		elemento.classList.remove("error");
+	}
+}
+
 window.onload = function () {
-	// Comprobar DNI al perder el foco
-	dni.addEventListener("blur", () => {
-		console.log("Evento blur activado");
-		if (!comprobarDni(dni.value)) {
-			dni.classList.add("error");
-			dni.value = "Introduce correctamente el valor del campo";
-		} else {
-			dni.classList.remove("error");
-		}
-	});
-
-	// Comprobar correo al perder el foco
-	const email = document.getElementById("email");
-	email.addEventListener("blur", () => {
-		if (!comprobarCorreo(email.value)) {
-			email.classList.add("error");
-			email.value = "Introduce correctamente el valor del campo";
-		} else {
-			email.classList.remove("error");
-		}
-	});
-
-	// Comprobar código de vuelo al perder el foco
-	const idVuelo = document.getElementById("idVuelo");
-	idVuelo.addEventListener("blur", () => {
-		if (!comprobarCodigo(idVuelo.value)) {
-			idVuelo.classList.add("error");
-			idVuelo.value = "Introduce correctamente el valor del campo";
-		} else {
-			idVuelo.classList.remove("error");
-		}
-	});
+	const validar = validarCampos();
 };
+
 
 // ---------------- Formulario iniciar Sesion ---------------
 const inicio = document.getElementById('contenedor3');

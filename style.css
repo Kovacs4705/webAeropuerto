@@ -221,6 +221,16 @@ input.error {
     border: 2px solid red !important;
 }
 
+.mensaje {
+    display: none; /* Asegura que el mensaje de error esté oculto inicialmente */
+}
+
+.noValido {
+    color: red;
+    display: block; /* Muestra el mensaje de error cuando sea inválido */
+}
+
+
 #loader {
     display: none;
     position: relative;
