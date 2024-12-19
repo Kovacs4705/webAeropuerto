@@ -185,7 +185,7 @@ button:hover {
 }
 
 #listaVuelos {
-    display: flex;
+    display: block;
     float: right;
     margin-left: 5%;
     margin-right: 5%;
@@ -193,9 +193,18 @@ button:hover {
     height: 760px;
     width: 100%;
     max-width: 20%;
+    overflow-y: auto;
+    box-sizing: border-box;
     background-color: #fef6e4;
     border: 2px solid #d1a684;
     box-shadow: 0 4px 8px rgba(166, 123, 91, 0.4);
+}
+
+#contenedorVuelos {
+    list-style: none;
+    /* Opcional: elimina los puntos o números de la lista */
+    padding: 0;
+    margin: 0;
 }
 
 .contador {
@@ -222,12 +231,14 @@ input.error {
 }
 
 .mensaje {
-    display: none; /* Asegura que el mensaje de error esté oculto inicialmente */
+    display: none;
+    /* Asegura que el mensaje de error esté oculto inicialmente */
 }
 
 .noValido {
     color: red;
-    display: block; /* Muestra el mensaje de error cuando sea inválido */
+    display: block;
+    /* Muestra el mensaje de error cuando sea inválido */
 }
 
 
