@@ -14,7 +14,7 @@ class Vuelo {
 		if (this.compararHoras(hora_salida, hora_llegada)) {
 			this.hora_llegada = hora_llegada;
 		} else {
-			alert("La hora de llegada no puede ser anterior a la de salida.");
+			alert("La hora de llegada debe ser posterior a la de salida.");
 			this.hora_llegada = null; // O un valor por defecto
 		}
 	}
@@ -58,12 +58,13 @@ class Vuelo {
 	// Argumentos: "nuevaHoraLlegada - la nueva hora de llegada del vuelo"
 	// Funcionalidad: "Establece una nueva hora de llegada para el vuelo, validando que sea posterior a la hora de salida."
 	setHoraLlegada(nuevaHoraLlegada) {
-		if (this.compararHoras(nuevaHoraLlegada, this.hora_salida)) {
+		if (this.compararHoras(this.hora_salida, nuevaHoraLlegada)) {
 			this.hora_llegada = nuevaHoraLlegada;
-		} else
+		} else {
 			alert(
 				"La hora de llegada introducida no es correcta.\nDebe ser posterior a la hora de salida"
 			);
+		}
 	}
 
 	// Nombre de la Funcion: "getHoraSalida"
@@ -77,12 +78,13 @@ class Vuelo {
 	// Argumentos: "nuevaHoraSalida - la nueva hora de salida del vuelo"
 	// Funcionalidad: "Establece una nueva hora de salida para el vuelo, validando que sea anterior a la hora de llegada."
 	setHoraSalida(nuevaHoraSalida) {
-		if (!this.compararHoras(nuevaHoraSalida, this.hora_llegada)) {
+		if (this.compararHoras(nuevaHoraSalida, this.hora_llegada)) {
 			this.hora_salida = nuevaHoraSalida;
-		} else
+		} else {
 			alert(
 				"La hora de salida introducida no es correcta.\nDebe ser anterior a la hora de llegada"
 			);
+		}
 	}
 
 	// Nombre de la Funcion: "compararHoras"
@@ -96,7 +98,7 @@ class Vuelo {
 		const minutosTotales1 = horas1 * 60 + minutos1;
 		const minutosTotales2 = horas2 * 60 + minutos2;
 
-		return minutosTotales1 <= minutosTotales2;
+		return minutosTotales1 < minutosTotales2;
 	}
 }
 
