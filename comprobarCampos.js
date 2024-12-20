@@ -1,5 +1,8 @@
 // David Kovacs y Alejandro Solar
 
+// Nombre de la Funcion: "comprobarCampoVacio"
+// Argumentos: "campo - el valor del campo a comprobar, mensaje - el mensaje de error a mostrar"
+// Funcionalidad: "Comprueba si un campo está vacío y muestra un mensaje de error si es así."
 function comprobarCampoVacio(campo, mensaje) {
 	if (campo.trim() === "") {
 		console.log("Estoy Aqui");
@@ -10,6 +13,9 @@ function comprobarCampoVacio(campo, mensaje) {
 	return true;
 }
 
+// Nombre de la Funcion: "comprobarDni"
+// Argumentos: "dni - el valor del DNI a comprobar, mensajeError - el mensaje de error a mostrar"
+// Funcionalidad: "Comprueba si un DNI es válido según las reglas españolas."
 function comprobarDni(dni, mensajeError) {
 	let letras = [
 		"T",
@@ -75,6 +81,9 @@ function comprobarDni(dni, mensajeError) {
 	}
 }
 
+// Nombre de la Funcion: "comprobarCorreo"
+// Argumentos: "correo - el valor del correo a comprobar, mensajeError - el mensaje de error a mostrar"
+// Funcionalidad: "Comprueba si un correo electrónico tiene un formato válido."
 function comprobarCorreo(correo, mensajeError) {
 	let emailRegExp = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
@@ -88,6 +97,9 @@ function comprobarCorreo(correo, mensajeError) {
 	return true;
 }
 
+// Nombre de la Funcion: "comprobarCadena"
+// Argumentos: "nombre - el valor del nombre a comprobar, mensajeError - el mensaje de error a mostrar"
+// Funcionalidad: "Comprueba si una cadena no contiene caracteres no permitidos."
 function comprobarCadena(nombre, mensajeError) {
 	// Eliminar espacios al inicio y al final del nombre
 	nombre = nombre.trim();
@@ -109,6 +121,9 @@ function comprobarCadena(nombre, mensajeError) {
 	}
 }
 
+// Nombre de la Funcion: "comprobarCodigo"
+// Argumentos: "codigo - el valor del código a comprobar, mensajeError - el mensaje de error a mostrar"
+// Funcionalidad: "Comprueba si un código de vuelo existe en el aeropuerto."
 function comprobarCodigo(codigo, mensajeError) {
 	if (comprobarCampoVacio(codigo, mensajeError)) {
 		if (aeropuerto.consultarVuelo(codigo) === null) {
@@ -119,6 +134,9 @@ function comprobarCodigo(codigo, mensajeError) {
 	}
 }
 
+// Nombre de la Funcion: "comprobarMetodoPago"
+// Argumentos: "Ninguno"
+// Funcionalidad: "Comprueba si se ha seleccionado un método de pago."
 function comprobarMetodoPago() {
 	esValido = true;
 	console.log("Aqui llego");
@@ -137,7 +155,9 @@ function comprobarMetodoPago() {
 	return esValido;
 }
 
-// ---------- FUNCIONALIDAD DEL CONTADOR DE CARACTERES TEXTAREA -----------
+// Nombre de la Funcion: "comprobarTextaera"
+// Argumentos: "params - parámetros adicionales (no utilizados)"
+// Funcionalidad: "Comprueba y actualiza el contador de caracteres restantes en un textarea."
 const textArea = document.getElementById("comentario");
 const charRemaining = document.getElementById("charRemaining");
 
@@ -165,6 +185,9 @@ function comprobarTextaera(params) {
 	});
 }
 
+// Nombre de la Funcion: "validarCampos"
+// Argumentos: "blur - booleano que indica si se debe validar al perder el foco"
+// Funcionalidad: "Valida todos los campos del formulario según sus reglas específicas."
 function validarCampos(blur) {
 	let camposValidos = true;
 

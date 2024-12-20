@@ -10,6 +10,7 @@ const botonInvitado = document.getElementById("invitado");
 const spinner = document.getElementById("loader");
 const contenedorFormularios = document.getElementById("contenedorFormularios");
 
+// Maneja el evento de clic en el botón de invitado
 botonInvitado.addEventListener("click", () => {
 	formularioInicioSesion.style.display = "none";
 	botonInicioSesion.style.display = "none"; // Ocultar el botón
@@ -37,6 +38,7 @@ botonInvitado.addEventListener("click", () => {
 	}, 3000); // Esperar 2 segundos
 });
 
+// Maneja el evento de clic en el botón de inicio de sesión
 botonInicioSesion.addEventListener("click", () => {
 	// Array de usuarios y contraseñas
 	let usuarios = [
@@ -64,10 +66,11 @@ botonInicioSesion.addEventListener("click", () => {
 		setTimeout(() => {
 			spinner.style.display = "none"; // Ocultar el spinner
 			contenedorFormularios.style.display = "flex"; // Mostrar el formulario
-		}, 3000); // Esperar 2 segundos
+		}, 3000); // Esperar 3 segundos
 	} else {
 		alert("Credenciales incorrectas. Intenta de nuevo.");
 	}
 });
 
+// comprueba que no se pase de 120 caracteres el textarea
 comprobarTextaera();

@@ -1,6 +1,6 @@
 // David Kovacs y Alejandro Solar
 
-// funcion para obtener la cookie por su nombre (W3schools)
+// Obtiene el valor de una cookie por su nombre
 function getCookie(cname) {
 	let name = cname + "=";
 	let cookies = document.cookie.split(";");
@@ -16,34 +16,33 @@ function getCookie(cname) {
 	return "";
 }
 
-// Crea una cookie recibiendo su nombre, valor y dias de expiracion
+// Establece una cookie con el nombre, valor y días de expiración proporcionados
 function setCookie(nombre, valor, dias) {
 	let date = new Date();
-	date.setTime(date.getTime() + dias * 24 * 60 * 60 * 1000);
-	document.cookie = `${nombre}=${valor};expires=${date.toUTCString()};path=/`;
+	date.setTime(date.getTime() + dias * 24 * 60 * 60 * 1000); // Calcular la fecha de expiración
+	document.cookie = `${nombre}=${valor};expires=${date.toUTCString()};path=/`; // Establecer la cookie
 }
 
-// Elimina la cookie del contador quitandole un año en tiempo de expiracion
+// Elimina la cookie del contador de visitas
 function deleteCookie() {
-	setCookie("contador1", "", -1);
-	document.getElementById("contador1").innerText = `Numero de Visitas (Cookie): 0`;
+	setCookie("contador1", "", -1); // Establecer la cookie con una fecha de expiración pasada
+	document.getElementById("contador1").innerText = `Numero de Visitas (Cookie): 0`; // Actualizar el texto en la página
 }
 
-// Incrementa la cookie creada y si no existiera la crea y modifica
+// Incrementa el contador de visitas almacenado en una cookie y actualiza el elemento HTML correspondiente
 function incrementarVisitas() {
-	let visitas = getCookie("contador1");
+	let visitas = getCookie("contador1"); // Obtener el valor actual de la cookie
 	if (visitas) {
-		visitas = parseInt(visitas) + 1;
+		visitas = parseInt(visitas) + 1; // Incrementar el contador
 	} else {
-		visitas = 1;
+		visitas = 1; // Si no existe la cookie, establecer el contador en 1
 	}
 
-	setCookie("contador1", visitas, 365);
-	document.getElementById("contador1").innerText = `Numero de Visitas (Cookie): ${visitas}`;
+	setCookie("contador1", visitas, 365); // Guardar el nuevo valor en la cookie
+	document.getElementById("contador1").innerText = `Numero de Visitas (Cookie): ${visitas}`; // Actualizar el texto en la página
 }
 
-// Al pulsar el boton elimina la cookie
+// Asignar la función deleteCookie al evento onclick del botón
 document.getElementById("borrarCookie").onclick = deleteCookie;
-
 
 //Pd: si no funcionan recargar las cookies, prueba a abrirlo desde live server

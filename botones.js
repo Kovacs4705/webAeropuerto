@@ -1,5 +1,6 @@
 // David Kovacs y Alejandro Solar
 
+// Maneja el evento de clic en el botón de guardar
 document.getElementById("botonGuardar").addEventListener("click", () => {
 	const codigo = document.getElementById("codigo").value;
 	const compania = document.getElementById("compania").value;
@@ -36,6 +37,7 @@ document.getElementById("botonGuardar").addEventListener("click", () => {
 	document.getElementById("horaLlegada").value = "";
 });
 
+// Maneja el evento de clic en el botón de buscar
 document.getElementById("botonBuscar").addEventListener("click", () => {
 	// Obtener los valores ingresados por el usuario
 	const codigo = document.getElementById("codigo").value;
@@ -67,6 +69,7 @@ document.getElementById("botonBuscar").addEventListener("click", () => {
 	mostrarVuelos(vuelosFiltrados);
 });
 
+// Maneja el evento de clic en el botón de confirmar
 document.getElementById("botonConfirmar").addEventListener("click", () => {
 	let idVuelo = document.getElementById("idVuelo").value;
 	let dni = document.getElementById("dni").value;

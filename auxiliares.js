@@ -1,3 +1,6 @@
+// Nombre de la Funcion: "mostrarError"
+// Argumentos: "errorMsg - elemento HTML para mostrar el mensaje de error, mensaje - mensaje de error opcional"
+// Funcionalidad: "Muestra un mensaje de error en el elemento HTML especificado."
 function mostrarError(errorMsg, mensaje = null) {
 	if (mensaje) {
 		errorMsg.textContent = mensaje;
@@ -6,6 +9,9 @@ function mostrarError(errorMsg, mensaje = null) {
 	errorMsg.classList.add("noValido");
 }
 
+// Nombre de la Funcion: "mostrarExito"
+// Argumentos: "errorMsg - elemento HTML para mostrar el mensaje de éxito, elemento - elemento HTML opcional para eliminar la clase de error"
+// Funcionalidad: "Muestra un mensaje de éxito en el elemento HTML especificado."
 function mostrarExito(errorMsg, elemento = null) {
 	errorMsg.textContent = "";
 	errorMsg.classList.remove("noValido");
@@ -14,6 +20,9 @@ function mostrarExito(errorMsg, elemento = null) {
 	}
 }
 
+// Nombre de la Funcion: "mostrarVuelos"
+// Argumentos: "vuelos - array de objetos Vuelo a mostrar"
+// Funcionalidad: "Muestra una lista de vuelos en una tabla HTML."
 function mostrarVuelos(vuelos) {
 	// Obtener el contenedor de la tabla
 	const listaVuelos = document.getElementById("listaVuelos");
