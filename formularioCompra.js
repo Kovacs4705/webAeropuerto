@@ -4,7 +4,7 @@
 // Acceso al formulario
 const reservar = document.getElementById("formularioCompra");
 
-// Botón "Recordar" - Guardar datos en localStorage
+// Guarda los datos del formulario en localStorage si los datos son válidos
 document.getElementById("botonRecordar").addEventListener("click", () => {
 	if (!validarCampos(false)) {
 		alert("Datos Incorrectos, no se guardará la información");
@@ -16,14 +16,14 @@ document.getElementById("botonRecordar").addEventListener("click", () => {
 			email: reservar.querySelector("#email").value,
 		};
 
-		establecerLocalStorage("datosFormulario", JSON.stringify(datosFormulario));
+		establecerLocalStorage("datosFormulario", JSON.stringify(datosFormulario)); // Guardar los datos en localStorage
 		alert("Datos guardados en localStorage.");
 	}
 });
 
-// Botón "Cargar" - Recuperar datos de localStorage
+// Carga los datos del formulario desde localStorage si existen
 document.getElementById("botonCargar").addEventListener("click", () => {
-	const datosFormulario = JSON.parse(obtenerLocalStorage("datosFormulario"));
+	const datosFormulario = JSON.parse(obtenerLocalStorage("datosFormulario")); // Obtener los datos de localStorage
 
 	if (datosFormulario) {
 		reservar.querySelector("#dni").value = datosFormulario.dni;
@@ -31,18 +31,18 @@ document.getElementById("botonCargar").addEventListener("click", () => {
 		reservar.querySelector("#apellidos").value = datosFormulario.apellidos;
 		reservar.querySelector("#email").value = datosFormulario.email;
 		alert("Datos cargados en el formulario.");
-		validar = validarCampos(false);
+		validar = validarCampos(false); // Validar los campos cargados
 	} else {
 		alert("No hay datos guardados.");
 	}
 });
 
-// Función para establecer datos en localStorage
+// Establece un valor en localStorage con la clave proporcionada
 function establecerLocalStorage(clave, valor) {
 	localStorage.setItem(clave, valor);
 }
 
-// Función para obtener datos de localStorage
+// Obtiene un valor de localStorage usando la clave proporcionada
 function obtenerLocalStorage(clave) {
 	return localStorage.getItem(clave);
 }
