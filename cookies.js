@@ -1,6 +1,8 @@
 // David Kovacs y Alejandro Solar
 
-// Obtiene el valor de una cookie por su nombre
+// Nombre de la Funcion: "getCookie"
+// Argumentos: "cname - el nombre de la cookie a obtener"
+// Funcionalidad: "Obtiene el valor de una cookie por su nombre"
 function getCookie(cname) {
 	let name = cname + "=";
 	let cookies = document.cookie.split(";");
@@ -16,20 +18,26 @@ function getCookie(cname) {
 	return "";
 }
 
-// Establece una cookie con el nombre, valor y días de expiración proporcionados
+// Nombre de la Funcion: "setCookie"
+// Argumentos: "nombre - el nombre de la cookie, valor - el valor de la cookie, dias - los días de expiración de la cookie"
+// Funcionalidad: "Establece una cookie con el nombre, valor y días de expiración proporcionados"
 function setCookie(nombre, valor, dias) {
 	let date = new Date();
 	date.setTime(date.getTime() + dias * 24 * 60 * 60 * 1000); // Calcular la fecha de expiración
 	document.cookie = `${nombre}=${valor};expires=${date.toUTCString()};path=/`; // Establecer la cookie
 }
 
-// Elimina la cookie del contador de visitas
+// Nombre de la Funcion: "deleteCookie"
+// Argumentos: "Ninguno"
+// Funcionalidad: "Elimina la cookie del contador de visitas"
 function deleteCookie() {
 	setCookie("contador1", "", -1); // Establecer la cookie con una fecha de expiración pasada
 	document.getElementById("contador1").innerText = `Numero de Visitas (Cookie): 0`; // Actualizar el texto en la página
 }
 
-// Incrementa el contador de visitas almacenado en una cookie y actualiza el elemento HTML correspondiente
+// Nombre de la Funcion: "incrementarVisitas"
+// Argumentos: "Ninguno"
+// Funcionalidad: "Incrementa el contador de visitas almacenado en una cookie y actualiza el elemento HTML correspondiente"
 function incrementarVisitas() {
 	let visitas = getCookie("contador1"); // Obtener el valor actual de la cookie
 	if (visitas) {
